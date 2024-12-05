@@ -8,13 +8,22 @@ from torch.utils.data import Dataset, DataLoader
 import os
 from model import DDXModel  # Ensure this matches your model definition
 from tqdm import tqdm  # For progress bars
+import argparse
+
+# Argument parsing
+parser = argparse.ArgumentParser(description="Compute Self-Influence using TrackInCP")
+parser.add_argument('--num_checkpoints', type=int, default=1, help='Number of checkpoints to use (default: 10)')
+parser.add_argument('--checkpoint_dir', type=str, default='checkpoints', help='Directory containing checkpoints')
+parser.add_argument('--batch_size', type=int, default=32, help='Batch size for data loaders (default: 32)')
+parser.add_argument('--hidden_sizes', nargs='+', type=int, default=[1024, 512], help='List of hidden layer sizes')
+args = parser.parse_args()
 
 # Set up the device configuration
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Using device: {device}')
 
 # Directory containing checkpoints
-checkpoint_dir = 'checkpoints'
+checkpoint_dir = args.checkpoint_dir
 
 # Load the pathology mapping to get the number of pathologies
 with open('pathology_mapping.pkl', 'rb') as f:
@@ -35,7 +44,7 @@ def load_sparse_matrix(filename):
 
 # Load the data and ensure labels are int64
 X_train_sparse = load_sparse_matrix('X_train.h5')
-y_train = np.load('y_train.npy').astype(np.int64)  # Convert to int64
+y_train = np.load('y_train_noisy.npy').astype(np.int64)  # Convert to int64
 
 # Define the SparseDataset class
 class SparseDataset(Dataset):
@@ -53,7 +62,7 @@ class SparseDataset(Dataset):
         return X_dense, y_item
 
 # Create dataset and data loader
-batch_size = 32  # Adjust as needed
+batch_size = args.batch_size  # Use batch size from arguments
 train_dataset = SparseDataset(X_train_sparse, y_train)
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=False)
 
@@ -61,7 +70,18 @@ train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=False)
 input_size = X_train_sparse.shape[1]
 
 # Get list of checkpoint files
-checkpoint_files = sorted([os.path.join(checkpoint_dir, f) for f in os.listdir(checkpoint_dir) if f.startswith('model_epoch_') and f.endswith('.pth')])
+checkpoint_files = sorted([os.path.join(checkpoint_dir, f) for f in os.listdir(checkpoint_dir)
+                           if f.startswith('model_epoch_') and f.endswith('.pth')])
+
+# Use the first X checkpoints
+num_checkpoints_to_use = args.num_checkpoints
+checkpoint_files = checkpoint_files[:num_checkpoints_to_use]
+
+if len(checkpoint_files) == 0:
+    print("No checkpoints found. Exiting.")
+    exit()
+
+print(f"Using the first {len(checkpoint_files)} checkpoints from '{checkpoint_dir}'.")
 
 # Initialize self-influence array
 num_samples = len(train_dataset)
@@ -111,8 +131,8 @@ for checkpoint_path in tqdm(checkpoint_files, desc='Processing checkpoints'):
     if learning_rate is None:
         # Get learning rate from optimizer state_dict
         learning_rate = checkpoint['optimizer_state_dict']['param_groups'][0]['lr']
-    # Initialize model
-    model = DDXModel(input_size=input_size, hidden_sizes=[1024, 512], output_size=output_size)
+    # Initialize model with configurable hidden sizes
+    model = DDXModel(input_size=input_size, hidden_sizes=args.hidden_sizes, output_size=output_size)
     model.load_state_dict(checkpoint['model_state_dict'])
     model.to(device)
     model.eval()
