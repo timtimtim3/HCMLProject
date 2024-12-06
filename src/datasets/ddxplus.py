@@ -5,33 +5,34 @@ import pickle
 from scipy import sparse
 import h5py
 
+# WE'RE NOT USING THIS
 
-class MNIST:
-    """
-    download to data/minst
-    preprocess
+# def load_sparse_matrix(filename):
+#     with h5py.File(filename, 'r') as hf:
+#         data = hf['X'][:]
+#         indices = hf['indices'][:]
+#         indptr = hf['indptr'][:]
+#         shape = hf['shape'][:]
+#     X_sparse = sparse.csr_matrix((data, indices, indptr), shape=shape)
+#     return X_sparse
 
-    """
-    def __init__(self, split, labels, download=True):
-        
+# class SparseDataset(Dataset):
+#     def __init__(self, X_sparse, y):
+#         self.X_sparse = X_sparse
+#         self.y = y
 
-        if download and !os.path.exists(...):
-            self._download()
-            self._preprocess()
-            # delete original
-            # save preprocessed
-            self.save()
-           
-        
-        self.labels = labels
+#     def __len__(self):
+#         return self.X_sparse.shape[0]
 
-    def _download(self):
+#     def __getitem__(self, idx):
+#         # Get the sparse row and convert it to dense
+#         X_dense = self.X_sparse[idx].toarray().squeeze().astype(np.float32)
+#         y_item = self.y[idx]
+#         y_item = torch.tensor(y_item, dtype=torch.long)  # Ensure label is torch.long
+#         return X_dense, y_item
 
-        # ddownload
-        pass
 
-    def _preprocess(self):
-        pass
+
 
 
 # Specify the paths to your JSON files

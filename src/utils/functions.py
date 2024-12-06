@@ -1,7 +1,79 @@
+import torch
+import numpy as np
+import random
 
 
-def metrics():
-    pass
+def set_seed(seed):
+    """Set the seed for torch, random and numpy for reproducibility."""
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    np.random.seed(seed)
+    random.seed(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
+
+def get_device():
+    """Get the torch device, this can be cuda or cpu."""
+    return torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+
+def calculate_metrics(preds, labels, num_classes, device):
+    """
+    Calculate classification metrics including accuracy, macro-averaged precision, recall, and F1 score.
+
+    Args:
+        preds (torch.Tensor): Predicted class labels (1D tensor).
+        labels (torch.Tensor): True class labels (1D tensor).
+        num_classes (int): Number of classes in the dataset.
+        device (torch.device): Device where tensors are allocated (e.g., 'cpu' or 'cuda').
+
+    Returns:
+        tuple: A tuple containing the following metrics:
+            - accuracy (float): Overall accuracy of the predictions.
+            - macro_precision (float): Macro-averaged precision across all classes.
+            - macro_recall (float): Macro-averaged recall across all classes.
+            - macro_f1 (float): Macro-averaged F1 score across all classes.
+    """
+    
+    # Initialize variables to store true positives, false positives, false negatives
+    true_positives = torch.zeros(num_classes, device=device)
+    false_positives = torch.zeros(num_classes, device=device)
+    false_negatives = torch.zeros(num_classes, device=device)
+
+    for cls in range(num_classes):
+        # For each class, calculate true positives, false positives, false negatives
+        true_positives[cls] = ((preds == cls) & (labels == cls)).sum()
+        false_positives[cls] = ((preds == cls) & (labels != cls)).sum()
+        false_negatives[cls] = ((preds != cls) & (labels == cls)).sum()
+
+    # Calculate precision, recall for each class
+    precision = torch.zeros(num_classes, device=device)
+    recall = torch.zeros(num_classes, device=device)
+    f1 = torch.zeros(num_classes, device=device)
+
+    for cls in range(num_classes):
+        if true_positives[cls] + false_positives[cls] > 0:
+            precision[cls] = true_positives[cls] / (true_positives[cls] + false_positives[cls])
+        else:
+            precision[cls] = 0.0
+        if true_positives[cls] + false_negatives[cls] > 0:
+            recall[cls] = true_positives[cls] / (true_positives[cls] + false_negatives[cls])
+        else:
+            recall[cls] = 0.0
+        if precision[cls] + recall[cls] > 0:
+            f1[cls] = 2 * (precision[cls] * recall[cls]) / (precision[cls] + recall[cls])
+        else:
+            f1[cls] = 0.0
+
+    # Compute macro-average
+
+    accuracy = (preds == labels).sum().item() / len(labels)
+    macro_precision = precision.mean().item()
+    macro_recall = recall.mean().item()
+    macro_f1 = f1.mean().item()
+
+    return accuracy, macro_precision, macro_recall, macro_f1
 
 
 def add_label_noise(y, noise_level, num_classes, random_seed=None):

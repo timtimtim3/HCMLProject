@@ -1,3 +1,13 @@
+
+# =========================
+# 
+#  NEEDS TO BE REFACTORED
+#  - split into function
+#  - should only be called in the get_influences.py
+# 
+# =========================
+
+
 import torch
 import torch.nn as nn
 import numpy as np

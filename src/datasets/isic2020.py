@@ -1,19 +1,48 @@
-import os 
+import os
+from torch.utils.data import Dataset
+from torchvision import transforms
+
 
 TRAIN_DOWLOAD_URL = ""
 TEST_DOWNLOAD_URL = ""
+OUTPUT_DIR = "data/ISIC2020"
 
 
-class ISIC:
+class ISIC2020(Dataset):
 
-    def __init__(self, split: "train" | "test"):
+    def __init__(self, split, transform=[transforms.ToTensor()], download=True):
 
-        self.split = split
-        pass
+        self.root = "data/ISIC2020"
+        self.split = split  # can only be "train" or "val"
+
+        # Is used as input for MLP
+        self.data_dim = ...
+
+        # Used for model output
+        self.label_dim = ...
+
+        # Used for first layer in CNN
+        self.input_channels = ...
+
+        if download:
+            self._download()
+            self._preprocess()
+            self._save()
+
+        # Don't forget to use the transform list
 
 
     def _download(self):
-        # Run
-        os.system(f"wget {TRAIN_DOWLOAD_URL}")
+        # create OUTPUT_DIR
+        # os.system(f"wget {TRAIN_DOWLOAD_URL} -o {OUTPUT_DIR}")
+        pass
 
-dataset = ISIC("test")
+
+    def _preprocess(self):
+        # images need to be (input_channels, height, width)
+        pass
+
+    
+    def _save(self):
+        pass
+    

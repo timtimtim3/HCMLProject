@@ -18,7 +18,7 @@ pip install -r requirements.txt
 ## Train model
 
 ```
-python src/train.py --model ... --dataset ...
+python src/train.py --model mlp --dataset mnist
 ```
 
 ## Get influences

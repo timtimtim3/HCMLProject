@@ -1,3 +1,13 @@
+# =========================
+# 
+#  NEEDS TO BE REFACTORED
+#  - split into function
+#  - should only be called in files in src
+# 
+# =========================
+
+
+
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')  # Use a non-interactive backend suitable for servers
