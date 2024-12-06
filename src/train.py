@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
     if args.model.startswith("resnet"):
         # The data needs to be transformed if you want to use ResNet, see models/resnet.py
-        transform = get_resnet_transform(args.model)
+        transform = get_resnet_transform()
 
     train = DatasetClass(split="train", transform=transform, download=True)
     val = DatasetClass(split="val", transform=transform, download=True)
