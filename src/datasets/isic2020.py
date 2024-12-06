@@ -10,7 +10,7 @@ OUTPUT_DIR = "data/ISIC2020"
 
 class ISIC2020(Dataset):
 
-    def __init__(self, split, transform=[transforms.ToTensor()], download=True):
+    def __init__(self, split, transform=[], download=True):
 
         self.root = "data/ISIC2020"
         self.split = split  # can only be "train" or "val"
@@ -29,7 +29,11 @@ class ISIC2020(Dataset):
             self._preprocess()
             self._save()
 
+
         # Don't forget to use the transform list
+        transform_data = transforms.Compose([
+            transforms.ToTensor(),
+        ] + transform)
 
 
     def _download(self):
