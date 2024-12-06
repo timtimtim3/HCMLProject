@@ -6,29 +6,16 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
-from models.cnn import CNN
-from models.mlp import MLP
-
-from datasets.isic2020 import ISIC2020
-from datasets.mnist import MNIST
-
-from models.resnet import ResNet18, ResNet34, ResNet50, get_resnet_transform
+from datasets import AVAILABLE_DATASETS
+from models import AVAILABLE_MODELS
+from models.resnet import get_resnet_transform
 from utils.functions import calculate_metrics, get_device, set_seed
 from utils.logger import setup_logger
 
 
-datasets = {
-    "mnist": MNIST,
-    "isic2020": ISIC2020
-}
+models = AVAILABLE_MODELS
+datasets = AVAILABLE_DATASETS
 
-models = {
-    "mlp": MLP,
-    "cnn": CNN,
-    "resnet18": ResNet18,
-    "resnet34": ResNet34,
-    "resnet50": ResNet50
-}
 
 if __name__ == "__main__":
 
