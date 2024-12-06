@@ -9,7 +9,7 @@ class CNN(nn.Module):
 
     Args:
         input_channels (int): Number of input channels (e.g., 1 for grayscale, 3 for RGB images).
-        num_classes (int): Number of output classes.
+        output_size (int): Number of output classes.
     """
 
     def __init__(self, input_size, hidden_sizes, output_size, input_channels):
