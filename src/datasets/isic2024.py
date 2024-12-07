@@ -5,6 +5,11 @@ import zipfile
 import h5py
 from PIL import Image
 import io
+import pandas as pd
+from src.utils.functions import map_isic_label_to_binary
+import pandas as pd
+from torchvision import transforms
+
 
 OUTPUT_DIR = "data/ISIC2024"
 
@@ -12,29 +17,22 @@ OUTPUT_DIR = "data/ISIC2024"
 class ISIC2024(Dataset):
 
     def __init__(self, split, transform=[], force_download=False):
-
         self.root = OUTPUT_DIR
-        self.split = split  # can only be "train" or "val"
-
-        # Is used as input for MLP
-        self.data_dim = ...
-
-        # Used for model output
-        self.label_dim = ...
-
-        # Used for first layer in CNN
-        self.input_channels = ...
-
+        self.split = split  # "train" or "val"
+        
+        # Download data if needed
         self._download(force_download)
-        # self._preprocess()
-        # self._save()
 
+        # Load metadata and filter images
+        self._load_metadata()
+
+        # Load keys from HDF5 and match them to labels
         self._load()
 
-        # # Don't forget to use the transform list
-        # transform_data = transforms.Compose([
-        #     transforms.ToTensor(),
-        # ] + transform)
+        # Compose the transforms
+        self.transform = transforms.Compose([
+            transforms.ToTensor(),
+        ] + transform)
 
     def _run_kaggle_download(self, dataset_slug, filename, force_download=False):
         """
@@ -80,29 +78,58 @@ class ISIC2024(Dataset):
         # Download Metadata CSV
         self._run_kaggle_download(dataset_slug, "metadata.csv", force_download)
 
+    def _load_metadata(self):
+        metadata_path = os.path.join(self.root, "metadata.csv")
+        if not os.path.isfile(metadata_path):
+            raise FileNotFoundError(f"{metadata_path} not found. Run download first.")
+
+        metadata_df = pd.read_csv(metadata_path)
+        
+        # Create a mapping from isic_id to binary label
+        self.id_to_label = {}
+        for idx, row in metadata_df.iterrows():
+            isic_id = row["isic_id"]
+            binary_label = map_isic_label_to_binary(row["benign_malignant"])
+            if binary_label is not None:
+                self.id_to_label[isic_id] = binary_label
+
     def _load(self):
         hdf5_path = os.path.join(self.root, "image_256sq.hdf5")
         if not os.path.isfile(hdf5_path):
             raise FileNotFoundError(f"{hdf5_path} not found. Make sure the file exists or run download first.")
 
-        # Open the HDF5 file
+        # Gather valid image keys from the HDF5
         with h5py.File(hdf5_path, 'r') as f:
-            # print(len(list(f.keys())))
-            binary_data = f['ISIC_9965754'][()]
-            img = Image.open(io.BytesIO(binary_data))
+            all_keys = list(f.keys())  # image ids like "ISIC_9995837"
+            # Filter keys to those that are in id_to_label
+            self.image_ids = [k for k in all_keys if k in self.id_to_label]
 
-            print(img)  # This will tell you what type of object it is            
-            # Adjust the dataset names to match what’s inside your HDF5 file.
-            # For example, if your file has a dataset called "images" and one called "labels":
-            # self.images = f["images"][:]   # Reads the entire dataset into memory as a NumPy array
-            # self.labels = f["labels"][:]   # Same for labels
+        # Print how many we have after filtering
+        print(f"Found {len(self.image_ids)} images with binary labels.")
 
-    def _preprocess(self):
-        # images need to be (input_channels, height, width)
-        pass
+        # We don't read the images into memory now; we access them on-demand in __getitem__
+        self.hdf5_path = hdf5_path
+        self.hdf5_file = h5py.File(self.hdf5_path, 'r')
+
+    def __len__(self):
+        return len(self.image_ids)
     
-    def _save(self):
-        pass
+    def __getitem__(self, idx):
+        image_id = self.image_ids[idx]
+        label = self.id_to_label[image_id]
+        
+        binary_data = self.hdf5_file[image_id][()]
+
+        # Convert binary JPEG to PIL Image
+        img = Image.open(io.BytesIO(binary_data)).convert('RGB')
+        
+        if self.transform:
+            img = self.transform(img)
+        else:
+            # If no transform, convert PIL to tensor anyway
+            img = transforms.ToTensor()(img)
+
+        return img, label
 
 
 dataset = ISIC2024("hi")

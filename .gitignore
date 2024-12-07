@@ -2,7 +2,12 @@
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Kaggle API key
 kaggle.json
+
+# SLURM output files
+slurm_outputs/
 
 # C extensions
 *.so

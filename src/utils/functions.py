@@ -109,3 +109,23 @@ def add_label_noise(y, noise_level, num_classes, random_seed=None):
         y_noisy[idx] = new_label
 
     return y_noisy
+
+
+def map_isic_label_to_binary(label_str):
+    """
+    Map the label string to binary:
+    - "benign" or "indeterminate/benign" -> 0
+    - "malignant" or "indeterminate/malignant" -> 1
+    - "indeterminate" or "unlabeled" -> None (exclude these)
+    """
+    if not isinstance(label_str, str):
+        return None
+    label_str = label_str.lower().strip()
+
+    if "benign" in label_str:
+        return 0
+    elif "malignant" in label_str:
+        return 1
+    else:
+        # For unlabeled, indeterminate, etc.
+        return None
