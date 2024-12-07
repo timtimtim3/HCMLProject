@@ -1,8 +1,8 @@
-from datasets.isic2020 import ISIC2020
+from src.datasets.isic2024 import ISIC2024
 from datasets.mnist import MNIST
 
 
 AVAILABLE_DATASETS = {
     "mnist": MNIST,
-    "isic2020": ISIC2020
+    "isic2024": ISIC2024
 }

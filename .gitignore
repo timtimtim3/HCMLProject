@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+kaggle.json
 
 # C extensions
 *.so
