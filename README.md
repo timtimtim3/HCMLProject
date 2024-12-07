@@ -22,9 +22,10 @@ python src/train.py --model mlp --dataset mnist
 ```
 
 ## Get influences
+Note that the arguments for this script are the same as for train.py
 
 ```
-python src/get_influences.py --model ... --dataset ... --checkpoint_path
+python src/get_influences.py --model mlp --dataset mnist
 ```
 
 ## Analyse

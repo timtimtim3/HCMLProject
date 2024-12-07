@@ -18,6 +18,13 @@ def get_device():
     return torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
+def get_checkpoint_dir_from_args(args):
+    """This folder contains all the checkpoints."""
+
+    return f"checkpoints/{args.dataset}_{args.model}_"\
+        f"{args.hidden_sizes}_{args.lr}_{args.batch_size}_{args.num_epochs}"
+
+
 def calculate_metrics(preds, labels, num_classes, device):
     """
     Calculate classification metrics including accuracy, macro-averaged precision, recall, and F1 score.

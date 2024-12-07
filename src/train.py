@@ -1,5 +1,6 @@
 import os
 import argparse
+from tqdm import tqdm
 
 import torch
 import torch.nn as nn
@@ -9,26 +10,16 @@ from torch.utils.data import DataLoader
 from datasets import AVAILABLE_DATASETS
 from models import AVAILABLE_MODELS
 from models.resnet import get_resnet_transform
-from models.cnn import CNN
-from utils.functions import calculate_metrics, get_device, set_seed
+
+from utils.parser import add_shared_parser_arguments
+from utils.functions import calculate_metrics, get_checkpoint_dir_from_args, get_device, set_seed
 from utils.logger import setup_logger
-
-
-models = AVAILABLE_MODELS
-datasets = AVAILABLE_DATASETS
 
 
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Train a model on a specific dataset")
-
-    parser.add_argument("--dataset", type=str, choices=list(datasets.keys()), required=True)
-    parser.add_argument("--model", type=str, choices=list(models.keys()), required=True)
-    parser.add_argument('--hidden_sizes', nargs='+', type=int, default=[50, 50], help='List of hidden layer sizes')
-    parser.add_argument('--lr', type=float, default=0.01, help='Learning rate')
-    parser.add_argument('--batch_size', type=int, default=64, help='Batch size')
-    parser.add_argument('--num_epochs', type=int, default=10, help='Number of epochs')
-
+    add_shared_parser_arguments(parser)
     args = parser.parse_args()
 
     set_seed(42)
@@ -44,22 +35,30 @@ if __name__ == "__main__":
     logger.info(f'Batch size: {args.batch_size}')
     logger.info(f'Number of epochs: {args.num_epochs}')
 
-
-    checkpoint_dir = f"checkpoints/{args.dataset}_{args.model}_"\
-        f"{args.hidden_sizes}_{args.lr}_{args.batch_size}_{args.num_epochs}"
+    checkpoint_dir = get_checkpoint_dir_from_args(args) 
 
     # Create checkpoint directory
     if not os.path.exists(checkpoint_dir):
         os.makedirs(checkpoint_dir)
 
-    ModelClass = models[args.model]
-    DatasetClass = datasets[args.dataset]
+    ModelClass = AVAILABLE_MODELS[args.model]
+    DatasetClass = AVAILABLE_DATASETS[args.dataset]
 
     transform = []
 
     if args.model.startswith("resnet"):
         # The data needs to be transformed if you want to use ResNet, see models/resnet.py
         transform = get_resnet_transform()
+
+        # HACK TO MAKE MNIST WORK WITH A RESNET MODEL, 
+        # CAN BE REMOVED AFTER IMPLEMENTATION OF NEW DATASETS
+
+        if args.dataset == "mnist":
+            from torchvision import transforms
+
+            # Repeat the graychannel 3 times to get a RGB image of MNIST
+            transform.insert(0, transforms.Lambda(lambda x: x.repeat(3,1,1)))
+
 
     train = DatasetClass(split="train", transform=transform)
     val = DatasetClass(split="val", transform=transform)
@@ -84,7 +83,7 @@ if __name__ == "__main__":
         model.train()
         training_loss = 0
 
-        for data, labels in train_loader:
+        for data, labels in tqdm(train_loader, desc=f"Training epoch {epoch}"):
 
             # Move data to device
             data, labels = data.to(device), labels.to(device)
@@ -110,7 +109,7 @@ if __name__ == "__main__":
         validation_preds = []
         validation_labels = []
 
-        for data, labels in val_loader:
+        for data, labels in tqdm(val_loader, desc=f"Validating epoch {epoch}"):
             
             data, labels = data.to(device), labels.to(device)
 
@@ -152,7 +151,7 @@ if __name__ == "__main__":
             'model_state_dict': model.state_dict(),
             'optimizer_state_dict': optimizer.state_dict(),
             'learning_rate': args.lr,  # Save the current learning rate
-            'loss': training_loss,
+            'train_loss': training_loss,
             'val_loss': validation_loss,
             'val_accuracy': accuracy,
         }, checkpoint_path)

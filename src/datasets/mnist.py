@@ -22,7 +22,6 @@ class MNIST(MNIST):
         _transform = transforms.Compose([
             transforms.ToTensor(),
             # transforms.Lambda(lambda x: x.unsqueeze(1))  # add 1 dim for color channel
-            # transforms.Lambda(lambda x: x.repeat(3,1,1))
         ] + transform)
 
         super().__init__(root, train, _transform, None, download=True)
