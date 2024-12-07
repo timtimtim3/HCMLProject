@@ -1,4 +1,4 @@
-from src.datasets.isic2024 import ISIC2024
+from datasets.isic2024 import ISIC2024
 from datasets.mnist import MNIST
 
 

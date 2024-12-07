@@ -1,3 +1,4 @@
+import torch
 from torchvision.datasets import MNIST
 from torchvision import transforms
 
@@ -7,7 +8,7 @@ class MNIST(MNIST):
     Wrapper of MNIST from pytorch
     """
     
-    def __init__(self, split = "train", transform = [], download = False):
+    def __init__(self, split = "train", transform = [], force_download = False):
 
         # Overwrite rootdirectory
         root = "data/"
@@ -21,6 +22,7 @@ class MNIST(MNIST):
         _transform = transforms.Compose([
             transforms.ToTensor(),
             # transforms.Lambda(lambda x: x.unsqueeze(1))  # add 1 dim for color channel
+            # transforms.Lambda(lambda x: x.repeat(3,1,1))
         ] + transform)
 
-        super().__init__(root, train, _transform, None, download)
+        super().__init__(root, train, _transform, None, download=True)

@@ -6,7 +6,10 @@ class MLP(nn.Module):
 
     def __init__(self, input_size, hidden_sizes, output_size, input_channels):
         super().__init__()
-        self.input_size = input_size
+
+        # Is used to check if the input is flattened
+        self.flatten_dim = input_size * input_channels
+
         layers = []
         in_size = input_size
 
@@ -25,7 +28,7 @@ class MLP(nn.Module):
 
     def forward(self, x):
 
-        if x.shape[1] != self.input_size:
+        if x.shape[1] != self.flatten_dim:
             x = torch.flatten(x, start_dim=1)
 
         return self.network(x)

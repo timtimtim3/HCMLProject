@@ -9,6 +9,7 @@ from torch.utils.data import DataLoader
 from datasets import AVAILABLE_DATASETS
 from models import AVAILABLE_MODELS
 from models.resnet import get_resnet_transform
+from models.cnn import CNN
 from utils.functions import calculate_metrics, get_device, set_seed
 from utils.logger import setup_logger
 
@@ -60,8 +61,8 @@ if __name__ == "__main__":
         # The data needs to be transformed if you want to use ResNet, see models/resnet.py
         transform = get_resnet_transform()
 
-    train = DatasetClass(split="train", transform=transform, download=True)
-    val = DatasetClass(split="val", transform=transform, download=True)
+    train = DatasetClass(split="train", transform=transform)
+    val = DatasetClass(split="val", transform=transform)
 
     model = ModelClass(
         input_size=train.data_dim,

@@ -6,8 +6,7 @@ import h5py
 from PIL import Image
 import io
 import pandas as pd
-from src.utils.functions import map_isic_label_to_binary
-import pandas as pd
+from utils.functions import map_isic_label_to_binary
 from torchvision import transforms
 
 
@@ -130,6 +129,3 @@ class ISIC2024(Dataset):
             img = transforms.ToTensor()(img)
 
         return img, label
-
-
-dataset = ISIC2024("hi")
