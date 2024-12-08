@@ -25,6 +25,13 @@ def get_checkpoint_dir_from_args(args):
         f"{args.hidden_sizes}_{args.lr}_{args.batch_size}_{args.num_epochs}_{args.seed}"
 
 
+def get_output_dir_from_args(args):
+    """This folder contains all the outputs."""
+
+    return f"output/{args.dataset}_{args.model}_"\
+        f"{args.hidden_sizes}_{args.lr}_{args.batch_size}_{args.num_epochs}_{args.seed}"
+
+
 def calculate_metrics(preds, labels, num_classes, device):
     """
     Calculate classification metrics including accuracy, macro-averaged precision, recall, and F1 score.

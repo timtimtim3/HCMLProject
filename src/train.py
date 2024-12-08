@@ -76,6 +76,11 @@ if __name__ == "__main__":
     train_loader = DataLoader(train, batch_size=args.batch_size, shuffle=True)
     val_loader = DataLoader(val, batch_size=args.batch_size, shuffle=False)
 
+
+    # TODO: save best model
+
+    
+
     for epoch in range(args.num_epochs):
 
         # ===== Training =====
