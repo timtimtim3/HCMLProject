@@ -15,7 +15,7 @@ if __name__ == "__main__":
     add_shared_parser_arguments(parser)
     args = parser.parse_args()
 
-    set_seed(42)
+    set_seed(args.seed)
     logger = setup_logger() 
     device = get_device() 
 
