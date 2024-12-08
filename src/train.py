@@ -12,7 +12,7 @@ from models import AVAILABLE_MODELS
 from models.resnet import get_resnet_transform
 
 from utils.parser import add_shared_parser_arguments
-from utils.functions import calculate_metrics, get_checkpoint_dir_from_args, get_device, set_seed
+from utils.functions import calculate_metrics, get_checkpoint_dir_from_args, get_output_dir_from_args, get_device, set_seed
 from utils.logger import setup_logger
 
 
@@ -76,10 +76,10 @@ if __name__ == "__main__":
     train_loader = DataLoader(train, batch_size=args.batch_size, shuffle=True)
     val_loader = DataLoader(val, batch_size=args.batch_size, shuffle=False)
 
-
     # TODO: save best model
 
-    
+    # Initialize a variable to track the best validation accuracy
+    best_val_accuracy = 0.0
 
     for epoch in range(args.num_epochs):
 
@@ -162,3 +162,24 @@ if __name__ == "__main__":
         }, checkpoint_path)
 
         logger.info(f"Model checkpoint saved at {checkpoint_path}")
+
+        # Update the best model if current accuracy is better
+        if accuracy > best_val_accuracy:
+            best_val_accuracy = accuracy
+            best_model_state = {
+                'epoch': epoch + 1,
+                'model_state_dict': model.state_dict(),
+                'optimizer_state_dict': optimizer.state_dict(),
+                'learning_rate': args.lr,
+                'train_loss': training_loss,
+                'val_loss': validation_loss,
+                'val_accuracy': accuracy,
+            }
+            best_model_epoch = epoch + 1
+            logger.info(f"Found new best model with accuracy {accuracy:.4f} at epoch {epoch + 1}")
+
+    # After all epochs are done, save the best model
+    if best_model_state is not None:
+        best_model_path = os.path.join(checkpoint_dir, f'best_model_epoch_{best_model_epoch}.pth')
+        torch.save(best_model_state, best_model_path)
+        logger.info(f"Best model from epoch {best_model_epoch} saved at {best_model_path} with Val Acc: {best_val_accuracy:.4f}")
