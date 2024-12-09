@@ -17,7 +17,7 @@ class ISIC2024(Dataset):
 
     NUM_CLASSES = 2
 
-    def __init__(self, split, transform=[], force_download=False):
+    def __init__(self, split, transform=[], label_noise=0.0, force_download=False):
         self.root = OUTPUT_DIR
         self.split = split  # "train" or "val"
         
@@ -29,6 +29,16 @@ class ISIC2024(Dataset):
 
         # Load keys from HDF5 and match them to labels
         self._load()
+
+
+        # TODO 
+        # Make datasplit train or val indicated by split
+        # Add noise to labels (label_noise)
+        # Use utils/functions -> add_label_noise(.., ..., self.NUM_CLASSES)
+
+        # Make your life easier by running the script from the src folder
+        # e.g. test_script.py
+
 
         # Compose the transforms
         self.transform = transforms.Compose([

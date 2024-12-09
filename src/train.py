@@ -53,7 +53,7 @@ if __name__ == "__main__":
             transform.insert(0, transforms.Lambda(lambda x: x.repeat(3,1,1)))
 
 
-    train_dataset = DatasetClass(split="train", transform=transform)
+    train_dataset = DatasetClass(split="train", transform=transform, label_noise=args.label_noise)
     val_dataset = DatasetClass(split="val", transform=transform)
 
     # Initialize model with sample_info (input_size, output_size, etc)
@@ -92,9 +92,6 @@ if __name__ == "__main__":
 
 
         # ===== Validation =====
-
-        # NOTE: The validation loop should probably be a separate function
-        # since it can also be used to calculate the self_influence
 
         model.eval()
         validation_loss = 0
@@ -145,7 +142,8 @@ if __name__ == "__main__":
             learning_rate=args.lr,
             training_loss=training_loss,
             validation_loss=validation_loss,
-            validation_accuracy=accuracy
+            validation_accuracy=accuracy,
+            precision_recall_f1=(precision, recall, f1)
         )
 
         torch.save(asdict(checkpoint), checkpoint_path)
@@ -165,5 +163,5 @@ if __name__ == "__main__":
 
         logger.info(
             f"Best model from epoch {checkpoint.epoch} saved at {best_model_path} "\
-            "with Val Acc: {best_val_accuracy:.4f}"
+            f"with Val Acc: {best_val_accuracy:.4f}"
         )

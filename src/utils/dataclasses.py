@@ -19,3 +19,4 @@ class ModelCheckpoint:
     training_loss: float
     validation_loss: float
     validation_accuracy: float
+    precision_recall_f1: tuple[float]

@@ -53,14 +53,13 @@ if __name__ == "__main__":
     checkpoint_obj = torch.load(best_model_path, map_location=device)
     checkpoint = ModelCheckpoint(**checkpoint_obj)
 
-    train_dataset = DatasetClass(split="train")
+    train_dataset = DatasetClass(split="train", label_noise=args.label_noise)
     sample_info = get_sample_info(train_dataset)
+    train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=False)
 
     # Initialize model and populate with checkpoint
     model = ModelClass(sample_info, args.hidden_sizes).to(device)
     model.load_state_dict(checkpoint.model_state_dict)
-
-    train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=False)
 
     model.eval()
     results = []
@@ -96,6 +95,7 @@ if __name__ == "__main__":
 
     # Save the results as a JSON file
     baseline_path = os.path.join(output_dir, "baseline.json")
+
     with open(baseline_path, "w") as f:
         json.dump(results, f, indent=2)
 
@@ -110,6 +110,8 @@ if __name__ == "__main__":
 
     # Save the sorted results as a separate JSON file
     baseline_sorted_path = os.path.join(output_dir, "baseline_sorted_by_max_prob.json")
+
     with open(baseline_sorted_path, "w") as f:
         json.dump(results_sorted, f, indent=2)
+        
     logger.info(f"Baseline sorted results saved to {baseline_sorted_path}")
