@@ -4,22 +4,21 @@ import argparse
 from tqdm import tqdm
 
 import torch
-import torch.nn as nn
-import torch.optim as optim
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 
 from datasets import AVAILABLE_DATASETS
 from models import AVAILABLE_MODELS
 
+from utils.dataclasses import ModelCheckpoint
 from utils.parser import add_shared_parser_arguments
-from utils.functions import calculate_metrics, get_checkpoint_dir_from_args, get_output_dir_from_args, get_device, set_seed
+from utils.functions import get_checkpoint_dir_from_args, get_output_dir_from_args, get_device, get_sample_info, set_seed
 from utils.logger import setup_logger
 
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description="Calculate the influence scores based on a already trained model")
+    parser = argparse.ArgumentParser(description="Calculate the baseline using the current best model")
     add_shared_parser_arguments(parser)
     args = parser.parse_args()
 
@@ -29,24 +28,13 @@ if __name__ == "__main__":
 
     # Log parameters
     logger.info(f'Using device: {device}')
-    logger.info('Using seed 42')
-    logger.info('Hyperparameters:')
-    logger.info(f'Hidden sizes: {args.hidden_sizes}')
-    logger.info(f'Learning rate: {args.lr}')
-    logger.info(f'Batch size: {args.batch_size}')
-    logger.info(f'Number of epochs: {args.num_epochs}')
+    logger.info(f'Args: {vars(args)}')
 
     checkpoint_dir = get_checkpoint_dir_from_args(args) 
     output_dir = get_output_dir_from_args(args)
 
-    # Create output directory
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-
     ModelClass = AVAILABLE_MODELS[args.model]
     DatasetClass = AVAILABLE_DATASETS[args.dataset]
-
-    # python src/calculate_baseline.py --model cnn --dataset mnist
 
     # get best model from checkpoint dir (epoch number)
     best_model_path = None
@@ -62,18 +50,15 @@ if __name__ == "__main__":
     logger.info(f"Loading best model checkpoint from {best_model_path}")
 
     # Load the best model checkpoint
-    checkpoint = torch.load(best_model_path, map_location=device)
+    checkpoint_obj = torch.load(best_model_path, map_location=device)
+    checkpoint = ModelCheckpoint(**checkpoint_obj)
 
     train_dataset = DatasetClass(split="train")
+    sample_info = get_sample_info(train_dataset)
 
-    model = ModelClass(
-        input_size=train_dataset.data_dim,
-        hidden_sizes=args.hidden_sizes,
-        output_size=train_dataset.label_dim,
-        input_channels=train_dataset.input_channels
-    ).to(device)
-
-    model.load_state_dict(checkpoint['model_state_dict'])
+    # Initialize model and populate with checkpoint
+    model = ModelClass(sample_info, args.hidden_sizes).to(device)
+    model.load_state_dict(checkpoint.model_state_dict)
 
     train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=False)
 

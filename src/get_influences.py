@@ -19,14 +19,9 @@ if __name__ == "__main__":
     logger = setup_logger() 
     device = get_device() 
 
-    # Log parameters
+     # Log parameters
     logger.info(f'Using device: {device}')
-    logger.info('Using seed 42')
-    logger.info('Hyperparameters:')
-    logger.info(f'Hidden sizes: {args.hidden_sizes}')
-    logger.info(f'Learning rate: {args.lr}')
-    logger.info(f'Batch size: {args.batch_size}')
-    logger.info(f'Number of epochs: {args.num_epochs}')
+    logger.info(f'Args: {vars(args)}')
 
     checkpoint_dir = get_checkpoint_dir_from_args(args) 
 

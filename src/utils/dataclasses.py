@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from collections import OrderedDict
 
 
 @dataclass
@@ -12,3 +13,9 @@ class SampleInfo:
 @dataclass
 class ModelCheckpoint:
     epoch: int
+    model_state_dict: OrderedDict
+    optimizer_state_dict: dict
+    learning_rate: float
+    training_loss: float
+    validation_loss: float
+    validation_accuracy: float
