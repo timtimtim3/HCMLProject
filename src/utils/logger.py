@@ -1,7 +1,8 @@
 import logging
 from datetime import datetime
+import os
 
-LOG_DIR = "output"
+LOG_DIR = "output/logs"
 
 
 def setup_logger():
@@ -17,7 +18,10 @@ def setup_logger():
 
     # Set up logging
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    log_filename = f'{LOG_DIR}/training_{timestamp}.log'
+    log_filename = f'{LOG_DIR}/{timestamp}.log'
+
+    if not os.path.exists(LOG_DIR):
+        os.makedirs(LOG_DIR)
 
     logging.basicConfig(level=logging.INFO, format='%(message)s')
     logger = logging.getLogger()

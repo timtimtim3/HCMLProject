@@ -1,6 +1,9 @@
+import os
 import torch
 import numpy as np
 import random
+
+from utils.dataclasses import SampleInfo
 
 
 def set_seed(seed):
@@ -18,18 +21,48 @@ def get_device():
     return torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
-def get_checkpoint_dir_from_args(args):
+def get_name_from_args(args):
+    """Returns a formatted string, based on provided args"""
+    return f"{args.dataset}_{args.model}_{args.hidden_sizes}_{args.lr}_"\
+        f"{args.batch_size}_{args.num_epochs}_{args.label_noise}_{args.seed}"
+
+
+def get_checkpoint_dir_from_args(args, create=True):
     """This folder contains all the checkpoints."""
+    path = "checkpoints/" + get_name_from_args(args)
 
-    return f"checkpoints/{args.dataset}_{args.model}_"\
-        f"{args.hidden_sizes}_{args.lr}_{args.batch_size}_{args.num_epochs}_{args.seed}"
+    if create and not os.path.exists(path):
+        os.makedirs(path)
+
+    return path
 
 
-def get_output_dir_from_args(args):
+def get_output_dir_from_args(args, create=True):
     """This folder contains all the outputs."""
+    path = "output/" + get_name_from_args(args)
 
-    return f"output/{args.dataset}_{args.model}_"\
-        f"{args.hidden_sizes}_{args.lr}_{args.batch_size}_{args.num_epochs}_{args.seed}"
+    if create and not os.path.exists(path):
+        os.makedirs(path)
+
+    return path
+
+
+def get_sample_info(dataset):
+    """
+    Extracts relevant details such as input_size and output_size from the dataset and returns a 
+    SampleInfo instance to provide necessary information for each model.
+    """
+    sample, label = dataset[0]
+    channels, width, height = sample.shape
+
+    flatten_size = torch.flatten(sample, start_dim=1).shape[1]
+
+    return SampleInfo(
+        input_size=width,
+        output_size=dataset.NUM_CLASSES,
+        input_channels=channels,
+        flatten_input_size=flatten_size
+    )
 
 
 def calculate_metrics(preds, labels, num_classes, device):
@@ -90,7 +123,7 @@ def calculate_metrics(preds, labels, num_classes, device):
     return accuracy, macro_precision, macro_recall, macro_f1
 
 
-def add_label_noise(y, noise_level, num_classes, random_seed=None):
+def add_label_noise(y, noise_level, num_classes):
     """
     Introduce label noise by randomly flipping labels.
 
@@ -98,13 +131,10 @@ def add_label_noise(y, noise_level, num_classes, random_seed=None):
     - y: numpy array of true labels
     - noise_level: float, percentage of labels to corrupt (e.g., 0.1 for 10%)
     - num_classes: int, total number of classes
-    - random_seed: int, random seed for reproducibility (optional)
 
     Returns:
     - y_noisy: numpy array with noisy labels
     """
-    if random_seed is not None:
-        np.random.seed(random_seed)
 
     y_noisy = y.copy()
     n_samples = len(y)

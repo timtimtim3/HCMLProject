@@ -3,6 +3,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 
+from utils.dataclasses import SampleInfo
+
 
 class CNN(nn.Module):
     """
@@ -13,20 +15,20 @@ class CNN(nn.Module):
         output_size (int): Number of output classes.
     """
 
-    def __init__(self, input_size, hidden_sizes, output_size, input_channels):
+    def __init__(self, sample_info: SampleInfo, hidden_sizes):
         super().__init__()
 
         # Create two convolution layers with pooling after each layer
-        self.conv1 = nn.Conv2d(input_channels, 6, 5)
+        self.conv1 = nn.Conv2d(sample_info.input_channels, 6, 5)
         self.conv2 = nn.Conv2d(6, 16, 5)
         self.pool = nn.MaxPool2d(2, 2)
 
         # Create fully connected layers
-        layers = []
+        img_w_and_h = sample_info.input_size
 
-        img_w_and_h = int(np.sqrt(input_size))
-
+        # Size after two convolutions and two pooling operations
         in_size = int(((((img_w_and_h - 4) / 2) - 4) / 2)**2 * 16)
+        layers = []
 
         # Create hidden layers
         for hidden_size in hidden_sizes:
@@ -35,7 +37,7 @@ class CNN(nn.Module):
             in_size = hidden_size
 
         # Output layer
-        layers.append(nn.Linear(in_size, output_size))
+        layers.append(nn.Linear(in_size, sample_info.output_size))
 
         # Combine layers into a Sequential model
         self.fc = nn.Sequential(*layers)
