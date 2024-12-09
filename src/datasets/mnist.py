@@ -7,6 +7,8 @@ class MNIST(MNIST):
     """
     Wrapper of MNIST from pytorch
     """
+
+    NUM_CLASSES = 10
     
     def __init__(self, split = "train", transform = [], force_download = False):
 

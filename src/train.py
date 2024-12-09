@@ -12,7 +12,7 @@ from models import AVAILABLE_MODELS
 from models.resnet import get_resnet_transform
 
 from utils.parser import add_shared_parser_arguments
-from utils.functions import calculate_metrics, get_checkpoint_dir_from_args, get_output_dir_from_args, get_device, set_seed
+from utils.functions import calculate_metrics, get_checkpoint_dir_from_args, get_device, get_sample_info, set_seed
 from utils.logger import setup_logger
 
 
@@ -63,20 +63,15 @@ if __name__ == "__main__":
     train = DatasetClass(split="train", transform=transform)
     val = DatasetClass(split="val", transform=transform)
 
-    model = ModelClass(
-        input_size=train.data_dim,
-        hidden_sizes=args.hidden_sizes,
-        output_size=train.label_dim,
-        input_channels=train.input_channels
-    ).to(device)
+    # Initialize model with sample_info (input_size, output_size, etc)
+    sample_info = get_sample_info(train)
+    model = ModelClass(sample_info, args.hidden_sizes).to(device)
 
     optimizer = optim.SGD(model.parameters(), lr=args.lr)
     criterion = nn.CrossEntropyLoss()
 
     train_loader = DataLoader(train, batch_size=args.batch_size, shuffle=True)
     val_loader = DataLoader(val, batch_size=args.batch_size, shuffle=False)
-
-    # TODO: save best model
 
     # Initialize a variable to track the best validation accuracy
     best_val_accuracy = 0.0
@@ -95,7 +90,6 @@ if __name__ == "__main__":
             
             optimizer.zero_grad()
             outputs = model(data)
-
             loss = criterion(outputs, labels)
 
             loss.backward()

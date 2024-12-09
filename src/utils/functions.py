@@ -2,6 +2,8 @@ import torch
 import numpy as np
 import random
 
+from utils.dataclasses import SampleInfo
+
 
 def set_seed(seed):
     """Set the seed for torch, random and numpy for reproducibility."""
@@ -30,6 +32,24 @@ def get_output_dir_from_args(args):
 
     return f"output/{args.dataset}_{args.model}_"\
         f"{args.hidden_sizes}_{args.lr}_{args.batch_size}_{args.num_epochs}_{args.seed}"
+
+
+def get_sample_info(dataset):
+    """
+    Extracts relevant details such as input_size and output_size from the dataset and returns a 
+    SampleInfo instance to provide necessary information for each model.
+    """
+    sample, label = dataset[0]
+    channels, width, height = sample.shape
+
+    flatten_size = torch.flatten(sample, start_dim=1).shape[1]
+
+    return SampleInfo(
+        input_size=width,
+        output_size=dataset.NUM_CLASSES,
+        input_channels=channels,
+        flatten_input_size=flatten_size
+    )
 
 
 def calculate_metrics(preds, labels, num_classes, device):

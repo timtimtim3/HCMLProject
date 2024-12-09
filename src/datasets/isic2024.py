@@ -15,6 +15,8 @@ OUTPUT_DIR = "data/ISIC2024"
 
 class ISIC2024(Dataset):
 
+    NUM_CLASSES = 2
+
     def __init__(self, split, transform=[], force_download=False):
         self.root = OUTPUT_DIR
         self.split = split  # "train" or "val"
