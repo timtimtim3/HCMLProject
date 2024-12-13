@@ -41,7 +41,8 @@ if __name__ == "__main__":
 
     model = ModelClass(sample_info, args.hidden_sizes).to(device)
 
-    criterion = nn.CrossEntropyLoss()
+    # Set reduction to None to get the loss for each sample
+    criterion = nn.CrossEntropyLoss(reduction="none")
     
     # Get only model checkpoints
     checkpoint_paths = [p for p in os.listdir(checkpoint_dir) if p.startswith("model_epoch")]
@@ -64,6 +65,9 @@ if __name__ == "__main__":
 
         # Scores
         self_influences = []
+        model_outputs = []
+        model_loss = []
+        all_labels = []
 
         for data, labels in tqdm(train_loader, desc=f"Calculating self-influence scores (epoch {checkpoint.epoch})"):
 
@@ -72,26 +76,63 @@ if __name__ == "__main__":
 
             outputs = model(data)
             loss = criterion(outputs, labels)
+
+            outputs_list = outputs.detach().cpu().numpy().tolist()
+            loss_list = loss.detach().cpu().numpy().tolist()
+            labels_list = labels.detach().cpu().numpy().tolist()
+
+            model_outputs.extend(outputs_list)
+            model_loss.extend(loss_list)
+            all_labels.extend(labels_list)
+
+
+            for sample_loss in loss:
+
+                model.zero_grad()
+
+                # Set retain_graph to True to access gradients after they have been freed
+                sample_loss.backward(retain_graph=True)
+
+                # Get gradients from the last fully connected layer
+                grads = [g.grad for g in model.fc[-1].parameters()]
+                flat_grads = torch.cat([g.view(-1) for g in grads])
+
+                # Calculate score and add to list
+                score = checkpoint.learning_rate * torch.dot(flat_grads, flat_grads)
+                self_influences.append(score.cpu().item())
             
 
-            import pdb; pdb.set_trace()
+        results = []
 
-            # TODO
-            # Calculate self-influences...
-            # Add the result to self_influences
-            
-            # NOTE: every model class has a fully connected layer(s) -> model.fc
-            # You can draw inspiration from utils/self_influence.py
+        for index, (score, logits, loss, label) in enumerate(zip(self_influences, model_outputs, model_loss, all_labels)):
+            results.append(
+                {
+                    "index": index,
+                    "score": score,
+                    "logits": logits,
+                    "loss": loss,
+                    "label": label
+                }   
+            )
 
-
-            # Temporary
-            self_influences.append(loss.item())
-
-        
         output_path = os.path.join(output_dir, f"scores_epoch_{checkpoint.epoch}.json")
 
         with open(output_path, "w") as f:
-            json.dump(self_influences, f, indent=2)
+            json.dump(results, f, indent=2)
 
         logger.info(f"Self influence scores saved to {output_path}")
+
+        # Sort results based on score (low to high)
+        results_sorted = sorted(results, key=lambda x: x["score"])
+
+        # Add sorted into to results
+        for i, entry in enumerate(results_sorted):
+            entry["sorted_index"] = i
+
+        sorted_output_path = os.path.join(output_dir, f"scores_sorted_epoch_{checkpoint.epoch}.json")
         
+        with open(sorted_output_path, "w") as f:
+            json.dump(results_sorted, f, indent=2)
+
+        logger.info(f"Self influence scores saved to {output_path}")
+       
