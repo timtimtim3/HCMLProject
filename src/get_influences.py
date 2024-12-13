@@ -74,6 +74,8 @@ if __name__ == "__main__":
             loss = criterion(outputs, labels)
             
 
+            import pdb; pdb.set_trace()
+
             # TODO
             # Calculate self-influences...
             # Add the result to self_influences

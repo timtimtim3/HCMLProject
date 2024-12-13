@@ -18,8 +18,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'ISIC20
 class ISIC2024(Dataset):
     NUM_CLASSES = 2
 
-    def __init__(self, split, transform=None, force_download=False, train_ratio=0.8, val_ratio=0.1, seed=42,
-                 label_noise=0.0):
+    def __init__(self, split, transform=None, force_download=False, train_ratio=0.8, val_ratio=0.1, label_noise=0.0):
         """
         Args:
             split (str): "train", "val", or "test"
@@ -27,7 +26,6 @@ class ISIC2024(Dataset):
             force_download (bool): If True, force re-download of data.
             train_ratio (float): Ratio for training split. E.g., 0.8 means 80% of data is train.
             val_ratio (float): Ratio for validation split.
-            seed (int): Random seed for reproducible splits.
         """
         self.root = OUTPUT_DIR
         self.split = split  # "train", "val", or "test"
@@ -35,7 +33,6 @@ class ISIC2024(Dataset):
 
         self.train_ratio = train_ratio
         self.val_ratio = val_ratio
-        self.seed = seed
         self.noise_level = label_noise
 
         if transform is None:
@@ -140,7 +137,6 @@ class ISIC2024(Dataset):
 
     def _split(self, split):
         # Create a reproducible split
-        random.seed(self.seed)
         random.shuffle(self.image_ids)
 
         total = len(self.image_ids)
