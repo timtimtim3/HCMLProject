@@ -1,3 +1,4 @@
+import json
 import os
 import argparse
 from tqdm import tqdm
@@ -14,7 +15,7 @@ from models.resnet import get_resnet_transform
 
 from utils.dataclasses import ModelCheckpoint
 from utils.parser import add_shared_parser_arguments
-from utils.functions import calculate_metrics, get_checkpoint_dir_from_args, get_device, get_sample_info, set_seed
+from utils.functions import calculate_metrics, get_checkpoint_dir_from_args, get_device, get_output_dir_from_args, get_sample_info, set_seed
 from utils.logger import setup_logger
 
 
@@ -69,12 +70,15 @@ if __name__ == "__main__":
     # Initialize a variable to track the best validation accuracy
     best_val_accuracy = 0.0
 
+    training_data = []
+
     for epoch in range(args.num_epochs):
 
         # ===== Training =====
 
         model.train()
         training_loss = 0
+        num_training_samples = 0
 
         for data, labels in tqdm(train_loader, desc=f"Training epoch {epoch}"):
 
@@ -88,8 +92,10 @@ if __name__ == "__main__":
             loss.backward()
             optimizer.step()
 
-            training_loss += loss.item() / data.size(0)
+            training_loss += loss.item()
+            num_training_samples += data.size(0)
 
+        training_loss /= num_training_samples
 
         # ===== Validation =====
 
@@ -97,6 +103,7 @@ if __name__ == "__main__":
         validation_loss = 0
         validation_preds = []
         validation_labels = []
+        num_validation_samples = 0
 
         for data, labels in tqdm(val_loader, desc=f"Validating epoch {epoch}"):
             
@@ -106,13 +113,15 @@ if __name__ == "__main__":
 
                 outputs = model(data)
                 loss = criterion(outputs, labels)
-                validation_loss += loss.item() / data.size(0)
+                validation_loss += loss.item()
+                num_validation_samples += data.size(0)
 
                 preds = torch.argmax(outputs, dim=1)
 
                 validation_preds.append(preds)
                 validation_labels.append(labels)
 
+        validation_loss /= num_training_samples
 
         # Concatenate all predictions and labels
         validation_preds = torch.cat(validation_preds)
@@ -146,6 +155,16 @@ if __name__ == "__main__":
             precision_recall_f1=(precision, recall, f1)
         )
 
+        training_data.append({
+            "epoch": epoch+1,
+            "training_loss": training_loss,
+            "validation_loss": validation_loss,
+            "validation_accuracy": accuracy,
+            "precision": precision,
+            "recall": recall,
+            "f1": f1
+        })
+
         torch.save(asdict(checkpoint), checkpoint_path)
 
         logger.info(f"Model checkpoint saved at {checkpoint_path}")
@@ -165,3 +184,10 @@ if __name__ == "__main__":
             f"Best model from epoch {checkpoint.epoch} saved at {best_model_path} "\
             f"with Val Acc: {best_val_accuracy:.4f}"
         )
+
+
+    output_dir = get_output_dir_from_args(args)
+    output_path = os.path.join(output_dir, "training_stats.json")
+
+    with open(output_path, "w") as f:
+        json.dump(training_data, f, indent=2)

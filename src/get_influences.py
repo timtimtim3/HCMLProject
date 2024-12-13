@@ -19,6 +19,9 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Calculate the influence scores based on a already trained model")
     add_shared_parser_arguments(parser)
+
+    parser.add_argument("--epochs", nargs="+", required=True, type=int, help="Specify for which epochs to calculate the influence scores")
+
     args = parser.parse_args()
 
     set_seed(args.seed)
@@ -50,8 +53,10 @@ if __name__ == "__main__":
     # Sort by epoch
     sorted_paths = sorted(checkpoint_paths, key=lambda x: (len(x), x))
 
+    selected_epochs = [f"model_epoch_{e}.pth" for e in args.epochs]
+
     # For each checkpoint
-    for filename in sorted_paths:
+    for filename in selected_epochs:
 
         # Get checkpoint data
         checkpoint_path = os.path.join(checkpoint_dir, filename)
