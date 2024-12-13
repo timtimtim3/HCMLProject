@@ -1,3 +1,6 @@
+import pickle
+import random
+import numpy as np
 from torch.utils.data import Dataset
 import subprocess
 import os
@@ -6,21 +9,38 @@ import h5py
 from PIL import Image
 import io
 import pandas as pd
-from utils.functions import map_isic_label_to_binary
+from utils.functions import map_isic_label_to_binary, add_label_noise
 from torchvision import transforms
 
-
-OUTPUT_DIR = "data/ISIC2024"
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'ISIC2024')
 
 
 class ISIC2024(Dataset):
-
     NUM_CLASSES = 2
 
-    def __init__(self, split, transform=[], label_noise=0.0, force_download=False):
+    def __init__(self, split, transform=None, force_download=False, train_ratio=0.8, val_ratio=0.1, seed=42,
+                 label_noise=0.0):
+        """
+        Args:
+            split (str): "train", "val", or "test"
+            transform (list): Optional transforms to apply.
+            force_download (bool): If True, force re-download of data.
+            train_ratio (float): Ratio for training split. E.g., 0.8 means 80% of data is train.
+            val_ratio (float): Ratio for validation split.
+            seed (int): Random seed for reproducible splits.
+        """
         self.root = OUTPUT_DIR
-        self.split = split  # "train" or "val"
-        
+        self.split = split  # "train", "val", or "test"
+        assert self.split in ["train", "val", "test"], "split must be one of train, val, test"
+
+        self.train_ratio = train_ratio
+        self.val_ratio = val_ratio
+        self.seed = seed
+        self.noise_level = label_noise
+
+        if transform is None:
+            transform = []
+
         # Download data if needed
         self._download(force_download)
 
@@ -30,20 +50,16 @@ class ISIC2024(Dataset):
         # Load keys from HDF5 and match them to labels
         self._load()
 
+        # Split data
+        self._split(split=split)
 
-        # TODO 
-        # Make datasplit train or val indicated by split
-        # Add noise to labels (label_noise)
-        # Use utils/functions -> add_label_noise(.., ..., self.NUM_CLASSES)
-
-        # Make your life easier by running the script from the src folder
-        # e.g. test_script.py
-
+        if split == 'train' and label_noise > 0:
+            self._add_noise_and_save_labels()
 
         # Compose the transforms
         self.transform = transforms.Compose([
-            transforms.ToTensor(),
-        ] + transform)
+                                                transforms.ToTensor(),
+                                            ] + transform)
 
     def _run_kaggle_download(self, dataset_slug, filename, force_download=False):
         """
@@ -95,7 +111,7 @@ class ISIC2024(Dataset):
             raise FileNotFoundError(f"{metadata_path} not found. Run download first.")
 
         metadata_df = pd.read_csv(metadata_path)
-        
+
         # Create a mapping from isic_id to binary label
         self.id_to_label = {}
         for idx, row in metadata_df.iterrows():
@@ -122,18 +138,52 @@ class ISIC2024(Dataset):
         self.hdf5_path = hdf5_path
         self.hdf5_file = h5py.File(self.hdf5_path, 'r')
 
+    def _split(self, split):
+        # Create a reproducible split
+        random.seed(self.seed)
+        random.shuffle(self.image_ids)
+
+        total = len(self.image_ids)
+        train_end = int(total * self.train_ratio)
+        val_end = train_end + int(total * self.val_ratio)
+
+        if split == 'train':
+            self.image_ids = self.image_ids[:train_end]
+        elif split == 'val':
+            self.image_ids = self.image_ids[train_end:val_end]
+        else:
+            self.image_ids = self.image_ids[val_end:]
+
+    def _add_noise_and_save_labels(self):
+        ids, labels = zip(*self.id_to_label.items())
+        labels = np.array(labels)
+
+        # Save the original id_to_label using pickle
+        with open(os.path.join(self.root, 'labels_train.pkl'), 'wb') as f:
+            pickle.dump(self.id_to_label, f)
+
+        # Generate noisy labels
+        noisy_labels = add_label_noise(labels, noise_level=self.noise_level, num_classes=self.NUM_CLASSES)
+
+        # Reconstruct the dictionary with noisy labels
+        self.id_to_label = dict(zip(ids, noisy_labels))
+
+        # Save the noisy id_to_label using pickle
+        with open(os.path.join(self.root, 'labels_noisy_train.pkl'), 'wb') as f:
+            pickle.dump(self.id_to_label, f)
+
     def __len__(self):
         return len(self.image_ids)
-    
+
     def __getitem__(self, idx):
         image_id = self.image_ids[idx]
         label = self.id_to_label[image_id]
-        
+
         binary_data = self.hdf5_file[image_id][()]
 
         # Convert binary JPEG to PIL Image
         img = Image.open(io.BytesIO(binary_data)).convert('RGB')
-        
+
         if self.transform:
             img = self.transform(img)
         else:
