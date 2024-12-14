@@ -1,32 +1,53 @@
+import os
+import pickle
+import numpy as np
 import torch
-from torchvision.datasets import MNIST
+from torchvision.datasets import MNIST as TorchvisionMNIST
 from torchvision import transforms
+from utils.functions import add_label_noise
 
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'data')
 
-class MNIST(MNIST):
+class MNIST(TorchvisionMNIST):
     """
-    Wrapper of MNIST from pytorch
+    Wrapper of the MNIST dataset from pytorch.
     """
 
     NUM_CLASSES = 10
-    
-    def __init__(self, split = "train", transform = [], label_noise=0.0, force_download = False):
 
-        # Overwrite rootdirectory
-        root = "data/"
-        train = True if split == "train" else False
+    def __init__(self, split="train", transform=[], label_noise=0.0, seed=42):
+        self.root = OUTPUT_DIR
 
+        # Determine if we are in train mode or not
+        train = (split == "train")
+
+        # Compose the transforms
         _transform = transforms.Compose([
-            transforms.ToTensor(),
-        ] + transform)
+                                            transforms.ToTensor(),
+                                        ] + transform)
 
-        super().__init__(root, train, _transform, None, download=True)
+        super().__init__(self.root, train=train, transform=_transform, download=True)
 
-        
-        # TODO
-        # Find how labels are stored
-        # Change labels, indicated by label_noise
-        # Use utils/functions -> add_label_noise(.., ..., self.NUM_CLASSES)
+        self.split = split
+        self.label_noise = label_noise
 
-        # Make your life easier by running the script from the src folder
-        # e.g. test_script.py
+        # If this is the training split and we have a non-zero noise level, add noise
+        if self.split == 'train' and self.label_noise > 0:
+            os.makedirs(self.root, exist_ok=True)
+
+            # Convert targets to numpy array for convenience
+            labels = np.array(self.targets)
+
+            # Save original labels
+            with open(os.path.join(self.root, "MNIST", 'labels_train.pkl'), 'wb') as f:
+                pickle.dump(labels, f)
+
+            # Generate noisy labels
+            noisy_labels = add_label_noise(labels, noise_level=self.label_noise, num_classes=self.NUM_CLASSES)
+
+            # Assign noisy labels back to the dataset
+            self.targets = torch.tensor(noisy_labels, dtype=torch.long)
+
+            # Save the noisy labels
+            with open(os.path.join(self.root, "MNIST", 'labels_noisy_train.pkl'), 'wb') as f:
+                pickle.dump(noisy_labels, f)
