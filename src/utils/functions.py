@@ -19,11 +19,10 @@ def get_device():
     """Get the torch device, this can be cuda or cpu."""
     return torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-
-def get_name_from_args(args):
+def get_name_from_args(args, label_noise=None):
     """Returns a formatted string, based on provided args"""
     return f"{args.dataset}_{args.model}_{args.hidden_sizes}_{args.lr}_"\
-        f"{args.batch_size}_{args.num_epochs}_{args.label_noise}_{args.seed}"
+        f"{args.batch_size}_{args.num_epochs}_{args.label_noise if label_noise is None else label_noise}_{args.seed}"
 
 
 def get_checkpoint_dir_from_args(args, create=True):
@@ -36,9 +35,9 @@ def get_checkpoint_dir_from_args(args, create=True):
     return path
 
 
-def get_output_dir_from_args(args, create=True):
+def get_output_dir_from_args(args, create=True, label_noise=None):
     """This folder contains all the outputs."""
-    path = "output/" + get_name_from_args(args)
+    path = "output/" + get_name_from_args(args, label_noise=label_noise)
 
     if create and not os.path.exists(path):
         os.makedirs(path)

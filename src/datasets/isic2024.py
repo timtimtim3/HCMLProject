@@ -156,19 +156,18 @@ class ISIC2024(Dataset):
             self.image_ids = self.image_ids[val_end:]
 
     def _add_noise_and_save_labels(self):
-        ids, labels = zip(*self.id_to_label.items())
-        labels = np.array(labels)
+        # Use the order of self.image_ids to define the indexing
+        labels = np.array([self.id_to_label[iid] for iid in self.image_ids])
 
         # Save the original id_to_label using pickle
         with open(os.path.join(self.root, "ISIC2024", f'labels_train_{self.noise_level}.pkl'), 'wb') as f:
             pickle.dump(self.id_to_label, f)
             print(f"Original labels saved at {self.root}/ISIC2024/labels_train.pkl")
 
-        # Generate noisy labels
+        # Apply noise
         noisy_labels = add_label_noise(labels, noise_level=self.noise_level, num_classes=self.NUM_CLASSES)
 
-        # Reconstruct the dictionary with noisy labels
-        self.id_to_label = dict(zip(ids, noisy_labels))
+        self.id_to_label = dict(zip(self.image_ids, noisy_labels))
 
         # Save the noisy id_to_label using pickle
         with open(os.path.join(self.root, "ISIC2024", f'labels_noisy_train_{self.noise_level}.pkl'), 'wb') as f:
