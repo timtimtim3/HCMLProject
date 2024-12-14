@@ -19,7 +19,8 @@ class ISIC2024(Dataset):
     
     NUM_CLASSES = 2
 
-    def __init__(self, split, transform=None, force_download=False, train_ratio=0.8, val_ratio=0.1, label_noise=0.0):
+    def __init__(self, split, transform=None, force_download=False, train_ratio=0.8, val_ratio=0.1, label_noise=0.0,
+                 seed=42):
         """
         Args:
             split (str): "train", "val", or "test"
@@ -28,6 +29,7 @@ class ISIC2024(Dataset):
             train_ratio (float): Ratio for training split. E.g., 0.8 means 80% of data is train.
             val_ratio (float): Ratio for validation split.
         """
+        self.seed = seed
         self.root = OUTPUT_DIR
         self.split = split  # "train", "val", or "test"
         assert self.split in ["train", "val", "test"], "split must be one of train, val, test"
@@ -137,6 +139,8 @@ class ISIC2024(Dataset):
         self.hdf5_file = h5py.File(self.hdf5_path, 'r')
 
     def _split(self, split):
+        random.seed(self.seed)
+
         # Create a reproducible split
         random.shuffle(self.image_ids)
 

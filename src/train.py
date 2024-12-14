@@ -53,9 +53,8 @@ if __name__ == "__main__":
             # Repeat the graychannel 3 times to get a RGB image of MNIST
             transform.insert(0, transforms.Lambda(lambda x: x.repeat(3,1,1)))
 
-
-    train_dataset = DatasetClass(split="train", transform=transform, label_noise=args.label_noise)
-    val_dataset = DatasetClass(split="val", transform=transform)
+    train_dataset = DatasetClass(split="train", transform=transform, label_noise=args.label_noise, seed=args.seed)
+    val_dataset = DatasetClass(split="val", transform=transform, seed=args.seed)
 
     # Initialize model with sample_info (input_size, output_size, etc)
     sample_info = get_sample_info(train_dataset)
