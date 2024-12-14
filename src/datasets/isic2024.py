@@ -156,32 +156,20 @@ class ISIC2024(Dataset):
             self.image_ids = self.image_ids[val_end:]
 
     def _add_noise_and_save_labels(self):
-        ids, labels = zip(*self.id_to_label.items())
-        labels = np.array(labels)
+        # Use the order of self.image_ids to define the indexing
+        labels = np.array([self.id_to_label[iid] for iid in self.image_ids])
 
-        # Sort by ID
-        # Assuming ids are sortable (e.g., strings like "ISIC_..." or integers)
-        sorted_pairs = sorted(zip(ids, labels), key=lambda x: x[0])
-        sorted_ids, sorted_labels = zip(*sorted_pairs)
-        sorted_ids = np.array(sorted_ids)
-        sorted_labels = np.array(sorted_labels)
-
-        # Save the original labels as .npy
-        np.save(os.path.join(self.root, 'ids_train.npy'), sorted_ids)
-        np.save(os.path.join(self.root, 'labels_train.npy'), sorted_labels)
+        # Save the original labels in the same order as self.image_ids
+        np.save(os.path.join(self.root, 'ids_train.npy'), self.image_ids)
+        np.save(os.path.join(self.root, 'labels_train.npy'), labels)
 
         # Apply noise
         noisy_labels = add_label_noise(labels, noise_level=self.noise_level, num_classes=self.NUM_CLASSES)
-        # Rebuild the dictionary with noisy labels
-        self.id_to_label = dict(zip(ids, noisy_labels))
 
-        # Sort the noisy labels as well
-        sorted_noisy_pairs = sorted(zip(ids, noisy_labels), key=lambda x: x[0])
-        sorted_noisy_ids, sorted_noisy_labels = zip(*sorted_noisy_pairs)
-        sorted_noisy_labels = np.array(sorted_noisy_labels)
+        self.id_to_label = dict(zip(self.image_ids, noisy_labels))
 
-        # Save the noisy labels as .npy
-        np.save(os.path.join(self.root, f'labels_train_noisy{self.noise_level}.npy'), sorted_noisy_labels)
+        # Save the noisy labels aligned with the original indexing order
+        np.save(os.path.join(self.root, f'labels_train_noisy{self.noise_level}.npy'), noisy_labels)
 
     def __len__(self):
         return len(self.image_ids)
