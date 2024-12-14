@@ -158,19 +158,29 @@ class ISIC2024(Dataset):
         ids, labels = zip(*self.id_to_label.items())
         labels = np.array(labels)
 
-        # Save the original id_to_label using pickle
-        with open(os.path.join(self.root, 'labels_train.pkl'), 'wb') as f:
-            pickle.dump(self.id_to_label, f)
+        # Sort by ID
+        # Assuming ids are sortable (e.g., strings like "ISIC_..." or integers)
+        sorted_pairs = sorted(zip(ids, labels), key=lambda x: x[0])
+        sorted_ids, sorted_labels = zip(*sorted_pairs)
+        sorted_ids = np.array(sorted_ids)
+        sorted_labels = np.array(sorted_labels)
 
-        # Generate noisy labels
+        # Save the original labels as .npy
+        np.save(os.path.join(self.root, 'ids_train.npy'), sorted_ids)
+        np.save(os.path.join(self.root, 'labels_train.npy'), sorted_labels)
+
+        # Apply noise
         noisy_labels = add_label_noise(labels, noise_level=self.noise_level, num_classes=self.NUM_CLASSES)
-
-        # Reconstruct the dictionary with noisy labels
+        # Rebuild the dictionary with noisy labels
         self.id_to_label = dict(zip(ids, noisy_labels))
 
-        # Save the noisy id_to_label using pickle
-        with open(os.path.join(self.root, 'labels_noisy_train.pkl'), 'wb') as f:
-            pickle.dump(self.id_to_label, f)
+        # Sort the noisy labels as well
+        sorted_noisy_pairs = sorted(zip(ids, noisy_labels), key=lambda x: x[0])
+        sorted_noisy_ids, sorted_noisy_labels = zip(*sorted_noisy_pairs)
+        sorted_noisy_labels = np.array(sorted_noisy_labels)
+
+        # Save the noisy labels as .npy
+        np.save(os.path.join(self.root, f'labels_train_noisy{self.noise_level}.npy'), sorted_noisy_labels)
 
     def __len__(self):
         return len(self.image_ids)

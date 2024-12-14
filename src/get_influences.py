@@ -90,7 +90,6 @@ if __name__ == "__main__":
             model_loss.extend(loss_list)
             all_labels.extend(labels_list)
 
-
             for sample_loss in loss:
 
                 model.zero_grad()
@@ -134,10 +133,13 @@ if __name__ == "__main__":
         for i, entry in enumerate(results_sorted):
             entry["sorted_index"] = i
 
-        sorted_output_path = os.path.join(output_dir, f"scores_sorted_epoch_{checkpoint.epoch}.json")
-        
-        with open(sorted_output_path, "w") as f:
-            json.dump(results_sorted, f, indent=2)
+        # Sorting and then saving doesn't make sense because we need to aggregate the values for each sample and
+        # then sort the aggregated values instead
 
-        logger.info(f"Self influence scores saved to {output_path}")
+        # sorted_output_path = os.path.join(output_dir, f"scores_sorted_epoch_{checkpoint.epoch}.json")
+        #
+        # with open(sorted_output_path, "w") as f:
+        #     json.dump(results_sorted, f, indent=2)
+        #
+        # logger.info(f"Sorted self influence scores saved to {output_path}")
        

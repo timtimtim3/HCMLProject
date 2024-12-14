@@ -38,9 +38,7 @@ class MNIST(TorchvisionMNIST):
             # Convert targets to numpy array for convenience
             labels = np.array(self.targets)
 
-            # Save original labels
-            with open(os.path.join(self.root, "MNIST", 'labels_train.pkl'), 'wb') as f:
-                pickle.dump(labels, f)
+            np.save(os.path.join(self.root, "MNIST", "labels_train.npy"), labels)
 
             # Generate noisy labels
             noisy_labels = add_label_noise(labels, noise_level=self.label_noise, num_classes=self.NUM_CLASSES)
@@ -49,5 +47,4 @@ class MNIST(TorchvisionMNIST):
             self.targets = torch.tensor(noisy_labels, dtype=torch.long)
 
             # Save the noisy labels
-            with open(os.path.join(self.root, "MNIST", 'labels_noisy_train.pkl'), 'wb') as f:
-                pickle.dump(noisy_labels, f)
+            np.save(os.path.join(self.root, "MNIST", f"labels_train_noisy{self.label_noise}.npy"), noisy_labels)
