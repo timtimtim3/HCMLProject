@@ -160,7 +160,7 @@ class ISIC2024(Dataset):
         labels = np.array([self.id_to_label[iid] for iid in self.image_ids])
 
         # Save the original id_to_label using pickle
-        with open(os.path.join(self.root, "ISIC2024", f'labels_train_{self.noise_level}.pkl'), 'wb') as f:
+        with open(os.path.join("data", "ISIC2024", f'labels_train_{self.noise_level}.pkl'), 'wb') as f:
             pickle.dump(self.id_to_label, f)
             print(f"Original labels saved at {self.root}/ISIC2024/labels_train.pkl")
 
@@ -170,7 +170,7 @@ class ISIC2024(Dataset):
         self.id_to_label = dict(zip(self.image_ids, noisy_labels))
 
         # Save the noisy id_to_label using pickle
-        with open(os.path.join(self.root, "ISIC2024", f'labels_noisy_train_{self.noise_level}.pkl'), 'wb') as f:
+        with open(os.path.join("data", "ISIC2024", f'labels_noisy_train_{self.noise_level}.pkl'), 'wb') as f:
             pickle.dump(self.id_to_label, f)
             print(f"Noisy labels saved at {self.root}/ISIC2024/labels_noisy_train.pkl")
 
