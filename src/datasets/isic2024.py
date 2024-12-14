@@ -16,6 +16,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'ISIC20
 
 
 class ISIC2024(Dataset):
+    
     NUM_CLASSES = 2
 
     def __init__(self, split, transform=None, force_download=False, train_ratio=0.8, val_ratio=0.1, label_noise=0.0,
