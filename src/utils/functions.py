@@ -55,7 +55,10 @@ def get_sample_info(dataset):
     sample, label = dataset[0]
     channels, width, height = sample.shape
 
-    flatten_size = torch.flatten(sample, start_dim=1).shape[1]
+    if channels == 3:
+        flatten_size = channels * width * height
+    else:
+        flatten_size = torch.flatten(sample, start_dim=1).shape[1]
 
     return SampleInfo(
         input_size=width,
