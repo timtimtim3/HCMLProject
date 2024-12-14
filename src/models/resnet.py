@@ -35,7 +35,8 @@ def build_resnet(template, weights, sample_info: SampleInfo, hidden_sizes):
     model = template(weights=weights)
 
     layers = []
-    in_size = 512
+    
+    in_size = model.fc.in_features
 
     # Create hidden layers
     for hidden_size in hidden_sizes:
