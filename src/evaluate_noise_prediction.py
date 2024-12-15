@@ -2,8 +2,6 @@ import numpy as np
 import argparse
 import json
 import os
-from tqdm import tqdm
-import pickle
 import matplotlib.pyplot as plt
 
 from utils.parser import add_shared_parser_arguments
@@ -11,20 +9,22 @@ from utils.functions import get_output_dir_from_args, get_device, set_seed
 from utils.logger import setup_logger
 
 # Helper functions
-def load_data(output_dir, dataset, label_noise):
+def load_data(output_dir, dataset, label_noise, score_epoch_num):
     """
     Load the ground truth labels, noisy labels, and influence scores from the specified output directory.
     """
+
     # Load original labels
-    with open(os.path.join("data", dataset.upper(), f"labels_train_{label_noise}.pkl"), 'rb') as f:
-        y_true = pickle.load(f)
+    y_true = np.load(os.path.join("data", dataset.upper(), f"labels_train.npy"))
 
     # Load noisy labels
-    with open(os.path.join("data", dataset.upper(), f"labels_noisy_train_{label_noise}.pkl"), 'rb') as f:
-        y_noisy = pickle.load(f)
+    if label_noise != 0.0:
+        y_noisy = np.load(os.path.join("data", dataset.upper(), f"labels_train_noisy{label_noise}.npy"))
+    else:
+        y_noisy = y_true.copy()
 
     # Load influence scores
-    with open(os.path.join(output_dir, "scores_epoch_10.json"), 'r') as f:
+    with open(os.path.join(output_dir, f"scores_epoch_{score_epoch_num}.json"), 'r') as f:
         influence_scores_ours = [entry['score'] for entry in json.load(f)]
 
     with open(os.path.join(output_dir, "baseline.json"), 'r') as f:
@@ -107,11 +107,10 @@ def plot_results(args, f1_scores_ours, f1_scores_baseline, output_path):
 def main():
     parser = argparse.ArgumentParser(description="Evaluate noise detection performance.")
     add_shared_parser_arguments(parser)
-    parser.add_argument("--label_noises", nargs='+', required=True, type=float, help="Specify for which epochs to calculate the influence scores")
+    parser.add_argument("--label_noises", nargs='+', required=True, type=float, help="Specify the label noises used during training")
+    parser.add_argument("--epochs", nargs="+", type=int, required=True, help="Specify a list of epoch numbers for which the scores are loaded")
 
     args = parser.parse_args()
-
-    print(args)
 
     set_seed(args.seed)
     logger = setup_logger() 
@@ -124,13 +123,13 @@ def main():
     f1_scores_ours = []
     f1_scores_baseline = []
 
-    for label_noise in args.label_noises:
+    for index, label_noise in enumerate(args.label_noises):
 
         args.label_noise = label_noise
         output_dir = get_output_dir_from_args(args)
 
         # Load data
-        y_true, y_noisy, influence_scores_ours, influence_scores_baseline = load_data(output_dir, args.dataset, label_noise)
+        y_true, y_noisy, influence_scores_ours, influence_scores_baseline = load_data(output_dir, args.dataset, label_noise, args.epochs[index])
 
         # Identify actual noisy samples
         noisy_indices = set(np.where(y_true != y_noisy)[0])
