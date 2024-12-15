@@ -26,3 +26,7 @@ python src/get_influences.py --dataset "mnist" --model "cnn" --label_noise 0.1 -
 
 python src/plot_mislabeled_identified.py --dataset "mnist" --model "cnn" --label_noises 0.1 --hidden_sizes 128 64 --epochs 1 2 3 4 5 6 7 8 9 10
 
+
+# Baseline
+
+python src/calculate_baseline.py --dataset "mnist" --model "cnn" --label_noise 0.1 --hidden_sizes 128 64
