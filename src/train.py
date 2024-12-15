@@ -68,6 +68,7 @@ if __name__ == "__main__":
 
     # Initialize a variable to track the best validation accuracy
     best_val_accuracy = 0.0
+    best_model_checkpoint = None
 
     training_data = []
 
@@ -175,12 +176,12 @@ if __name__ == "__main__":
             logger.info(f"Found new best model with accuracy {accuracy:.4f} at epoch {epoch + 1}")
 
     # After all epochs are done, save the best model
-    if checkpoint is not None:
-        best_model_path = os.path.join(checkpoint_dir, f'best_model_epoch_{checkpoint.epoch}.pth')
-        torch.save(asdict(checkpoint), best_model_path)
+    if best_model_checkpoint is not None:
+        best_model_path = os.path.join(checkpoint_dir, f'best_model_epoch_{best_model_checkpoint.epoch}.pth')
+        torch.save(asdict(best_model_checkpoint), best_model_path)
 
         logger.info(
-            f"Best model from epoch {checkpoint.epoch} saved at {best_model_path} "\
+            f"Best model from epoch {best_model_checkpoint.epoch} saved at {best_model_path} "\
             f"with Val Acc: {best_val_accuracy:.4f}"
         )
 
