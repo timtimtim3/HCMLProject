@@ -159,20 +159,17 @@ class ISIC2024(Dataset):
         # Use the order of self.image_ids to define the indexing
         labels = np.array([self.id_to_label[iid] for iid in self.image_ids])
 
-        # Save the original id_to_label using pickle
-        with open(os.path.join("data", "ISIC2024", f'labels_train_{self.noise_level}.pkl'), 'wb') as f:
-            pickle.dump(self.id_to_label, f)
-            print(f"Original labels saved at {self.root}/ISIC2024/labels_train.pkl")
+        # Save the original labels in the same order as self.image_ids
+        np.save(os.path.join(self.root, 'ids_train.npy'), self.image_ids)
+        np.save(os.path.join(self.root, 'labels_train.npy'), labels)
 
         # Apply noise
         noisy_labels = add_label_noise(labels, noise_level=self.noise_level, num_classes=self.NUM_CLASSES)
 
         self.id_to_label = dict(zip(self.image_ids, noisy_labels))
 
-        # Save the noisy id_to_label using pickle
-        with open(os.path.join("data", "ISIC2024", f'labels_noisy_train_{self.noise_level}.pkl'), 'wb') as f:
-            pickle.dump(self.id_to_label, f)
-            print(f"Noisy labels saved at {self.root}/ISIC2024/labels_noisy_train.pkl")
+        # Save the noisy labels aligned with the original indexing order
+        np.save(os.path.join(self.root, f'labels_train_noisy{self.noise_level}.npy'), noisy_labels)
 
     def __len__(self):
         return len(self.image_ids)

@@ -38,7 +38,7 @@ if __name__ == "__main__":
     ModelClass = AVAILABLE_MODELS[args.model]
     DatasetClass = AVAILABLE_DATASETS[args.dataset]
 
-    train_dataset = DatasetClass(split="train", label_noise=args.label_noise)
+    train_dataset = DatasetClass(split="train", label_noise=args.label_noise, seed=args.seed)
     sample_info = get_sample_info(train_dataset)
     train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=False)
 
