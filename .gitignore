@@ -10,7 +10,7 @@ ddxplus/
 kaggle.json
 
 # SLURM output files
-slurm_outputs/
+slurm_output/
 
 # C extensions
 *.so
