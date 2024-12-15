@@ -64,6 +64,10 @@ if __name__ == "__main__":
     model.eval()
     results = []
 
+    all_logits = []
+    all_probs = []
+    all_labels = []
+
     # Do inference
     with torch.no_grad():
         for data, labels in tqdm(train_loader, desc="Calculating baseline on training set"):
@@ -79,16 +83,19 @@ if __name__ == "__main__":
             probs = probs.cpu().tolist()
             labels = labels.cpu().tolist()
 
-            # Store each sample individually
-            for index, (logit, prob, label) in enumerate(zip(logits, probs, labels)):
+            all_logits.extend(logits)
+            all_probs.extend(probs)
+            all_labels.extend(labels)
 
-                results.append({
-                    "index": index,
-                    "logits": logit,
-                    "probabilities": prob,
-                    "label": label
-                })
+        # Store each sample individually
+        for index, (logit, prob, label) in enumerate(zip(all_logits, all_probs, all_labels)):
 
+            results.append({
+                "index": index,
+                "logits": logit,
+                "probabilities": prob,
+                "label": label
+            })
 
     # Save the results as a JSON file
     baseline_path = os.path.join(output_dir, "baseline.json")
