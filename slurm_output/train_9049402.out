@@ -1,0 +1,29 @@
+Traceback (most recent call last):
+  File "/gpfs/home4/scur2832/HCMLProject/src/train.py", line 6, in <module>
+    import torch
+  File "/sw/arch/RHEL8/EB_production/2023/software/PyTorch/2.1.2-foss-2023a-CUDA-12.1.1/lib/python3.11/site-packages/torch/__init__.py", line 451, in <module>
+    raise ImportError(textwrap.dedent('''
+ImportError: Failed to load PyTorch C extensions:
+    It appears that PyTorch has loaded the `torch/_C` folder
+    of the PyTorch repository rather than the C extensions which
+    are expected in the `torch._C` namespace. This can occur when
+    using the `install` workflow. e.g.
+        $ python setup.py install && python -c "import torch"
+
+    This error can generally be solved using the `develop` workflow
+        $ python setup.py develop && python -c "import torch"  # This should succeed
+    or by running Python from a different directory.
+
+JOB STATISTICS
+==============
+Job ID: 9049402
+Cluster: snellius
+User/Group: scur2832/scur2832
+State: FAILED (exit code 1)
+Nodes: 1
+Cores per node: 16
+CPU Utilized: 00:00:01
+CPU Efficiency: 0.48% of 00:03:28 core-walltime
+Job Wall-clock time: 00:00:13
+Memory Utilized: 2.17 MB
+Memory Efficiency: 0.00% of 180.00 GB

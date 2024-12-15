@@ -1,0 +1,31 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu
+#SBATCH --gpus=1
+#SBATCH --job-name=install
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --time=02:00:00
+#SBATCH --output=slurm_output/install_%A.out
+
+module purge
+module load 2023
+
+# Create and activate the virtual environment
+python3 -m venv --system-site-packages venv
+source venv/bin/activate
+
+# Upgrade build tools and packaging utilities
+pip install --upgrade pip setuptools wheel packaging
+
+# Install dependencies directly
+pip install scipy pandas h5py numpy matplotlib ipykernel
+
+# Attempt installing kaggle with no build isolation to avoid metadata issues
+pip install --no-build-isolation kaggle
+
+# Install PyTorch and Torchvision with specified CUDA version
+pip install torch==2.5.1+cu124 torchvision==0.20.1+cu124 \
+    --extra-index-url https://download.pytorch.org/whl/cu124
+
+echo "Installation complete."

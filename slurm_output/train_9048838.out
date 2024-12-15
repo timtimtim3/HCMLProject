@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "/gpfs/home4/scur2832/HCMLProject/src/train.py", line 12, in <module>
+    from datasets import AVAILABLE_DATASETS
+  File "/gpfs/home4/scur2832/HCMLProject/src/datasets/__init__.py", line 1, in <module>
+    from datasets.isic2024 import ISIC2024
+  File "/gpfs/home4/scur2832/HCMLProject/src/datasets/isic2024.py", line 13, in <module>
+    from torchvision import transforms
+  File "/home/scur2832/.local/lib/python3.11/site-packages/torchvision/__init__.py", line 10, in <module>
+    from torchvision import _meta_registrations, datasets, io, models, ops, transforms, utils  # usort:skip
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/scur2832/.local/lib/python3.11/site-packages/torchvision/_meta_registrations.py", line 163, in <module>
+    @torch.library.register_fake("torchvision::nms")
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'torch.library' has no attribute 'register_fake'
+
+JOB STATISTICS
+==============
+Job ID: 9048838
+Cluster: snellius
+User/Group: scur2832/scur2832
+State: FAILED (exit code 1)
+Nodes: 1
+Cores per node: 16
+CPU Utilized: 00:00:04
+CPU Efficiency: 1.67% of 00:04:00 core-walltime
+Job Wall-clock time: 00:00:15
+Memory Utilized: 2.23 MB
+Memory Efficiency: 0.00% of 180.00 GB
