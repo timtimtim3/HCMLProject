@@ -156,8 +156,9 @@ def main():
             _, _, f1_ours = evaluate_noise_detection(noisy_indices, predicted_noisy_ours)
             _, _, f1_baseline = evaluate_noise_detection(noisy_indices, predicted_noisy_baseline)
 
-            f1_scores[model]['ours'].append(f1_ours)
             f1_scores[model]['baseline'].append(f1_baseline)
+            f1_scores[model]['ours'].append(f1_ours)
+            
 
     # Plot combined results
     plot_path = os.path.join(get_output_dir_from_args(args), f"../combined_noise_detection_performance_{args.dataset}.png")

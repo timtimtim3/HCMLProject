@@ -1,0 +1,17 @@
+Using device: cuda
+Args: {'dataset': 'isic2024', 'model': 'resnet18', 'hidden_sizes': [50, 50], 'lr': 0.01, 'batch_size': 64, 'num_epochs': 50, 'label_noise': 0.0, 'seed': 42, 'label_noises': [0.1, 0.2, 0.3, 0.4], 'epochs_resnet18': [27, 34, 15, 13], 'epochs_resnet50': [21, 14, 14, 16]}
+Plot saved at output/isic2024_resnet50_[50, 50]_0.01_64_50_0.4_42/../combined_noise_detection_performance_isic2024.png
+
+JOB STATISTICS
+==============
+Job ID: 9066536
+Cluster: snellius
+User/Group: scur2832/scur2832
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:00:11
+CPU Efficiency: 2.78% of 00:06:36 core-walltime
+Job Wall-clock time: 00:00:22
+Memory Utilized: 2.27 MB
+Memory Efficiency: 0.00% of 120.00 GB
