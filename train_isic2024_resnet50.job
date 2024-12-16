@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu_h100
+#SBATCH --gpus=1
+#SBATCH --job-name=i_res50
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --time=10:00:00
+#SBATCH --output=slurm_outputs/train_isic2024_resnet50_%A.out
+
+module purge
+module load 2023
+
+source venv/bin/activate
+
+# python src/train.py --model resnet50 --dataset isic2024 --num_epochs 50 --label_noise 0.0
+# python src/train.py --model resnet50 --dataset isic2024 --num_epochs 50 --label_noise 0.1
+# python src/train.py --model resnet50 --dataset isic2024 --num_epochs 50 --label_noise 0.2
+# python src/train.py --model resnet50 --dataset isic2024 --num_epochs 50 --label_noise 0.3
+python src/train.py --model resnet50 --dataset isic2024 --num_epochs 50 --label_noise 0.4

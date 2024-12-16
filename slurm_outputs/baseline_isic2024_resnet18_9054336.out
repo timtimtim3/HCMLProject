@@ -1,0 +1,22 @@
+Using device: cuda
+Args: {'dataset': 'isic2024', 'model': 'resnet50', 'hidden_sizes': [50, 50], 'lr': 0.01, 'batch_size': 64, 'num_epochs': 50, 'label_noise': 0.1, 'seed': 42}
+Loading best model checkpoint from checkpoints/isic2024_resnet50_[50, 50]_0.01_64_50_0.1_42/best_model_epoch_21.pth
+/gpfs/home4/scur2832/HCMLProject/src/calculate_baseline.py:53: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint_obj = torch.load(best_model_path, map_location=device)
+/gpfs/home4/scur2832/HCMLProject/src/datasets/isic2024.py:113: DtypeWarning: Columns (8,13,16,17,19) have mixed types. Specify dtype option on import or set low_memory=False.
+  metadata_df = pd.read_csv(metadata_path)
+slurmstepd: error: *** JOB 9054336 ON gcn120 CANCELLED AT 2024-12-16T09:35:32 ***
+
+JOB STATISTICS
+==============
+Job ID: 9054336
+Cluster: snellius
+User/Group: scur2832/scur2832
+State: CANCELLED (exit code 0)
+Nodes: 1
+Cores per node: 16
+CPU Utilized: 00:00:00
+CPU Efficiency: 0.00% of 00:06:56 core-walltime
+Job Wall-clock time: 00:00:26
+Memory Utilized: 2.27 MB
+Memory Efficiency: 0.00% of 180.00 GB

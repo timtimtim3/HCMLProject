@@ -1,0 +1,19 @@
+Using device: cuda
+Args: {'dataset': 'isic2024', 'model': 'resnet50', 'hidden_sizes': [50, 50], 'lr': 0.01, 'batch_size': 64, 'num_epochs': 50, 'label_noise': 0.1, 'seed': 42, 'epochs': [9]}
+/gpfs/home4/scur2832/HCMLProject/src/datasets/isic2024.py:113: DtypeWarning: Columns (8,13,16,17,19) have mixed types. Specify dtype option on import or set low_memory=False.
+  metadata_df = pd.read_csv(metadata_path)
+slurmstepd: error: *** JOB 9054341 ON gcn128 CANCELLED AT 2024-12-16T09:35:36 ***
+
+JOB STATISTICS
+==============
+Job ID: 9054341
+Cluster: snellius
+User/Group: scur2832/scur2832
+State: CANCELLED (exit code 0)
+Nodes: 1
+Cores per node: 16
+CPU Utilized: 00:00:00
+CPU Efficiency: 0.00% of 00:05:20 core-walltime
+Job Wall-clock time: 00:00:20
+Memory Utilized: 2.18 MB
+Memory Efficiency: 0.00% of 180.00 GB

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu_h100
+#SBATCH --gpus=1
+#SBATCH --job-name=bl_i_res18
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --time=10:00:00
+#SBATCH --output=slurm_outputs/baseline_isic2024_resnet18_%A.out
+
+module purge
+module load 2023
+
+source venv/bin/activate
+
+python src/calculate_baseline.py --model resnet18 --dataset isic2024 --num_epochs 50 --label_noise 0.1
+python src/calculate_baseline.py --model resnet18 --dataset isic2024 --num_epochs 50 --label_noise 0.2
+python src/calculate_baseline.py --model resnet18 --dataset isic2024 --num_epochs 50 --label_noise 0.3
+python src/calculate_baseline.py --model resnet18 --dataset isic2024 --num_epochs 50 --label_noise 0.4
