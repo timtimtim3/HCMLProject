@@ -1,0 +1,260 @@
+{
+    "ResNet18": {
+        "0.0": {
+            "default_training": {
+                "Best Epoch": 48,
+                "Validation Accuracy": 0.9117526896363884,
+                "F1 Score": 0.7541838884353638,
+                "Precision": 0.8294808864593506,
+                "Recall": 0.7133417725563049,
+                "Training Loss": 0.00285305638351339,
+                "Validation Loss": 0.00045219005308252697
+            }
+        },
+        "0.1": {
+            "baseline": {
+                "Best Epoch": 34,
+                "Validation Accuracy": 0.899904671115348,
+                "F1 Score": 0.6934677362442017,
+                "Precision": 0.8104528188705444,
+                "Recall": 0.6511740684509277,
+                "Training Loss": 0.006736682452800426,
+                "Validation Loss": 0.0005586774458276464
+            },
+            "our_method": {
+                "Best Epoch": 42,
+                "Validation Accuracy": 0.907258613645649,
+                "F1 Score": 0.7313289046287537,
+                "Precision": 0.8244396448135376,
+                "Recall": 0.6880462765693665,
+                "Training Loss": 0.003864460834543756,
+                "Validation Loss": 0.00047809623048660605
+            },
+            "default_training": {
+                "Best Epoch": 27,
+                "Validation Accuracy": 0.907258613645649,
+                "F1 Score": 0.7446082830429077,
+                "Precision": 0.8107029795646667,
+                "Recall": 0.7074630260467529,
+                "Training Loss": 0.006570950968214806,
+                "Validation Loss": 0.0005544312834739685
+            }
+        },
+        "0.2": {
+            "baseline": {
+                "Best Epoch": 26,
+                "Validation Accuracy": 0.8899632302873485,
+                "F1 Score": 0.6218557357788086,
+                "Precision": 0.7962746024131775,
+                "Recall": 0.5910411477088928,
+                "Training Loss": 0.008494672676350208,
+                "Validation Loss": 0.0007571359157562256
+            },
+            "our_method": {
+                "Best Epoch": 40,
+                "Validation Accuracy": 0.901538880566526,
+                "F1 Score": 0.7208026647567749,
+                "Precision": 0.7966957092285156,
+                "Recall": 0.6828890442848206,
+                "Training Loss": 0.004329572377559986,
+                "Validation Loss": 0.0005115318272976166
+            },
+            "default_training": {
+                "Best Epoch": 34,
+                "Validation Accuracy": 0.9009941440828,
+                "F1 Score": 0.7388513684272766,
+                "Precision": 0.7824759483337402,
+                "Recall": 0.7105194926261902,
+                "Training Loss": 0.008390963360096546,
+                "Validation Loss": 0.0006998166256762566
+            }
+        },
+        "0.3": {
+            "baseline": {
+                "Best Epoch": 30,
+                "Validation Accuracy": 0.8823369195151846,
+                "F1 Score": 0.5465044379234314,
+                "Precision": 0.7846564054489136,
+                "Recall": 0.5412269830703735,
+                "Training Loss": 0.009136494543197307,
+                "Validation Loss": 0.0008548029098104923
+            },
+            "our_method": {
+                "Best Epoch": 28,
+                "Validation Accuracy": 0.898542829906033,
+                "F1 Score": 0.6735652685165405,
+                "Precision": 0.8222805857658386,
+                "Recall": 0.6314539909362793,
+                "Training Loss": 0.004632541728146533,
+                "Validation Loss": 0.0005441136400750342
+            },
+            "default_training": {
+                "Best Epoch": 15,
+                "Validation Accuracy": 0.898815198147896,
+                "F1 Score": 0.6955381631851196,
+                "Precision": 0.800095796585083,
+                "Recall": 0.6548147797584534,
+                "Training Loss": 0.009864777442242238,
+                "Validation Loss": 0.0008877529291396446
+            }
+        },
+        "0.4": {
+            "baseline": {
+                "Best Epoch": 19,
+                "Validation Accuracy": 0.8768895546779245,
+                "F1 Score": 0.47048601508140564,
+                "Precision": 0.9384195804595947,
+                "Recall": 0.501653790473938,
+                "Training Loss": 0.009486435637068242,
+                "Validation Loss": 0.0008847872257232666
+            },
+            "our_method": {
+                "Best Epoch": 17,
+                "Validation Accuracy": 0.892550728585047,
+                "F1 Score": 0.6171190142631531,
+                "Precision": 0.8396896123886108,
+                "Recall": 0.5863606929779053,
+                "Training Loss": 0.005431684412601146,
+                "Validation Loss": 0.0005967923281040597
+            },
+            "default_training": {
+                "Best Epoch": 13,
+                "Validation Accuracy": 0.892005992101321,
+                "F1 Score": 0.6613757610321045,
+                "Precision": 0.7782881855964661,
+                "Recall": 0.6248835325241089,
+                "Training Loss": 0.010568823190445595,
+                "Validation Loss": 0.001087256958129558
+            }
+        }
+    },
+    "ResNet50": {
+        "0.0": {
+            "default_training": {
+                "Best Epoch": 39,
+                "Validation Accuracy": 0.9116165055154569,
+                "F1 Score": 0.7620048522949219,
+                "Precision": 0.8200510740280151,
+                "Recall": 0.7265243530273438,
+                "Training Loss": 0.00285807046795145,
+                "Validation Loss": 0.0004321385998675164
+            }
+        },
+        "0.1": {
+            "default_training": {
+                "Best Epoch": 21,
+                "Validation Accuracy": 0.9068500612828544,
+                "F1 Score": 0.7395778894424438,
+                "Precision": 0.8128993511199951,
+                "Recall": 0.7005998492240906,
+                "Training Loss": 0.006634059082700851,
+                "Validation Loss": 0.000541123130220048
+            },
+            "baseline": {
+                "Best Epoch": 25,
+                "Validation Accuracy": 0.9033092741386355,
+                "F1 Score": 0.7300082445144653,
+                "Precision": 0.7998844385147095,
+                "Recall": 0.6928970217704773,
+                "Training Loss": 0.006901475524395071,
+                "Validation Loss": 0.0005899049893338629
+            },
+            "our_method": {
+                "Best Epoch": 37,
+                "Validation Accuracy": 0.907258613645649,
+                "F1 Score": 0.7476243376731873,
+                "Precision": 0.8080415725708008,
+                "Recall": 0.7121988534927368,
+                "Training Loss": 0.004057702107251959,
+                "Validation Loss": 0.00046450832004242754
+            }
+        },
+        "0.2": {
+            "baseline": {
+                "Best Epoch": 15,
+                "Validation Accuracy": 0.8960915157292659,
+                "F1 Score": 0.6487199068069458,
+                "Precision": 0.8320163488388062,
+                "Recall": 0.6101652979850769,
+                "Training Loss": 0.008439591858234811,
+                "Validation Loss": 0.0007360919333518819
+            },
+            "our_method": {
+                "Best Epoch": 34,
+                "Validation Accuracy": 0.9054882200735395,
+                "F1 Score": 0.7270710468292236,
+                "Precision": 0.8164591789245605,
+                "Recall": 0.6851419806480408,
+                "Training Loss": 0.0042003285561470274,
+                "Validation Loss": 0.0004875534921250445
+            },
+            "default_training": {
+                "Best Epoch": 14,
+                "Validation Accuracy": 0.9018112488083889,
+                "F1 Score": 0.7194811105728149,
+                "Precision": 0.7993956208229065,
+                "Recall": 0.6806765198707581,
+                "Training Loss": 0.008604845290995658,
+                "Validation Loss": 0.000698440502552276
+            }
+        },
+        "0.3": {
+            "baseline": {
+                "Best Epoch": 20,
+                "Validation Accuracy": 0.8888737573198965,
+                "F1 Score": 0.6421949863433838,
+                "Precision": 0.7677087783813477,
+                "Recall": 0.6088892817497253,
+                "Training Loss": 0.009053187876559319,
+                "Validation Loss": 0.000890076046801628
+            },
+            "our_method": {
+                "Best Epoch": 15,
+                "Validation Accuracy": 0.899359934631622,
+                "F1 Score": 0.6883821487426758,
+                "Precision": 0.8115565180778503,
+                "Recall": 0.6461275219917297,
+                "Training Loss": 0.0044749522623863626,
+                "Validation Loss": 0.0005114416860519572
+            },
+            "default_training": {
+                "Best Epoch": 14,
+                "Validation Accuracy": 0.8973171728176494,
+                "F1 Score": 0.7252559661865234,
+                "Precision": 0.7726468443870544,
+                "Recall": 0.696108877658844,
+                "Training Loss": 0.009849594495144297,
+                "Validation Loss": 0.0009051131212964971
+            }
+        },
+        "0.4": {
+            "baseline": {
+                "Best Epoch": 1,
+                "Validation Accuracy": 0.87648100231513,
+                "F1 Score": 0.4670875668525696,
+                "Precision": 0.43824049830436707,
+                "Recall": 0.5,
+                "Training Loss": 0.009684557464274953,
+                "Validation Loss": 0.0009097834886388576
+            },
+            "our_method": {
+                "Best Epoch": 32,
+                "Validation Accuracy": 0.891188887375732,
+                "F1 Score": 0.6129034757614136,
+                "Precision": 0.8261390924453735,
+                "Recall": 0.5836895108222961,
+                "Training Loss": 0.0044610576162946985,
+                "Validation Loss": 0.0005663159570795424
+            },
+            "default_training": {
+                "Best Epoch": 16,
+                "Validation Accuracy": 0.8915974397385265,
+                "F1 Score": 0.6800191402435303,
+                "Precision": 0.7646788358688354,
+                "Recall": 0.6450144052505493,
+                "Training Loss": 0.010548642928549583,
+                "Validation Loss": 0.001087520156008132
+            }
+        }
+    }
+}

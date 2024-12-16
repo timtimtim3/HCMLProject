@@ -1,0 +1,216 @@
+Label noise: 0.1
+Total number of samples: 58750
+Total number of noisy samples: 5875
+Fraction of data checked: 10%, Fraction of mislabeled identified (self-influence): 71.63%
+Fraction of data checked: 20%, Fraction of mislabeled identified (self-influence): 91.71%
+Fraction of data checked: 30%, Fraction of mislabeled identified (self-influence): 96.31%
+Fraction of data checked: 40%, Fraction of mislabeled identified (self-influence): 98.11%
+Fraction of data checked: 50%, Fraction of mislabeled identified (self-influence): 98.94%
+Fraction of data checked: 60%, Fraction of mislabeled identified (self-influence): 99.44%
+Fraction of data checked: 70%, Fraction of mislabeled identified (self-influence): 99.71%
+Fraction of data checked: 80%, Fraction of mislabeled identified (self-influence): 99.88%
+Fraction of data checked: 90%, Fraction of mislabeled identified (self-influence): 99.95%
+Fraction of data checked: 100%, Fraction of mislabeled identified (self-influence): 100.00%
+Fraction of data checked: 10%, Fraction of mislabeled identified (baseline): 10.49%
+Fraction of data checked: 20%, Fraction of mislabeled identified (baseline): 21.55%
+Fraction of data checked: 30%, Fraction of mislabeled identified (baseline): 31.46%
+Fraction of data checked: 40%, Fraction of mislabeled identified (baseline): 41.19%
+Fraction of data checked: 50%, Fraction of mislabeled identified (baseline): 51.56%
+Fraction of data checked: 60%, Fraction of mislabeled identified (baseline): 62.03%
+Fraction of data checked: 70%, Fraction of mislabeled identified (baseline): 72.10%
+Fraction of data checked: 80%, Fraction of mislabeled identified (baseline): 81.06%
+Fraction of data checked: 90%, Fraction of mislabeled identified (baseline): 90.43%
+Fraction of data checked: 100%, Fraction of mislabeled identified (baseline): 100.00%
+Plot saved as 'output/isic2024_resnet18_[50, 50]_0.01_64_50_0.1_42/../self_influence_mislabeled_identification_isic2024_resnet18_noise_0.1.png'
+Self-influence curve plot saved as 'output/isic2024_resnet18_[50, 50]_0.01_64_50_0.1_42/../self_influence_curve_isic2024_resnet18_noise_0.1.png'
+Label noise: 0.2
+Total number of samples: 58750
+Total number of noisy samples: 11750
+Fraction of data checked: 10%, Fraction of mislabeled identified (self-influence): 43.97%
+Fraction of data checked: 20%, Fraction of mislabeled identified (self-influence): 77.49%
+Fraction of data checked: 30%, Fraction of mislabeled identified (self-influence): 91.93%
+Fraction of data checked: 40%, Fraction of mislabeled identified (self-influence): 96.21%
+Fraction of data checked: 50%, Fraction of mislabeled identified (self-influence): 97.85%
+Fraction of data checked: 60%, Fraction of mislabeled identified (self-influence): 98.83%
+Fraction of data checked: 70%, Fraction of mislabeled identified (self-influence): 99.30%
+Fraction of data checked: 80%, Fraction of mislabeled identified (self-influence): 99.63%
+Fraction of data checked: 90%, Fraction of mislabeled identified (self-influence): 99.86%
+Fraction of data checked: 100%, Fraction of mislabeled identified (self-influence): 100.00%
+Fraction of data checked: 10%, Fraction of mislabeled identified (baseline): 10.52%
+Fraction of data checked: 20%, Fraction of mislabeled identified (baseline): 20.76%
+Fraction of data checked: 30%, Fraction of mislabeled identified (baseline): 30.93%
+Fraction of data checked: 40%, Fraction of mislabeled identified (baseline): 40.93%
+Fraction of data checked: 50%, Fraction of mislabeled identified (baseline): 50.95%
+Fraction of data checked: 60%, Fraction of mislabeled identified (baseline): 61.31%
+Fraction of data checked: 70%, Fraction of mislabeled identified (baseline): 71.25%
+Fraction of data checked: 80%, Fraction of mislabeled identified (baseline): 80.81%
+Fraction of data checked: 90%, Fraction of mislabeled identified (baseline): 90.31%
+Fraction of data checked: 100%, Fraction of mislabeled identified (baseline): 100.00%
+Plot saved as 'output/isic2024_resnet18_[50, 50]_0.01_64_50_0.2_42/../self_influence_mislabeled_identification_isic2024_resnet18_noise_0.2.png'
+Self-influence curve plot saved as 'output/isic2024_resnet18_[50, 50]_0.01_64_50_0.2_42/../self_influence_curve_isic2024_resnet18_noise_0.2.png'
+Label noise: 0.3
+Total number of samples: 58750
+Total number of noisy samples: 17625
+Fraction of data checked: 10%, Fraction of mislabeled identified (self-influence): 30.99%
+Fraction of data checked: 20%, Fraction of mislabeled identified (self-influence): 59.34%
+Fraction of data checked: 30%, Fraction of mislabeled identified (self-influence): 82.31%
+Fraction of data checked: 40%, Fraction of mislabeled identified (self-influence): 92.73%
+Fraction of data checked: 50%, Fraction of mislabeled identified (self-influence): 96.11%
+Fraction of data checked: 60%, Fraction of mislabeled identified (self-influence): 97.87%
+Fraction of data checked: 70%, Fraction of mislabeled identified (self-influence): 98.81%
+Fraction of data checked: 80%, Fraction of mislabeled identified (self-influence): 99.46%
+Fraction of data checked: 90%, Fraction of mislabeled identified (self-influence): 99.82%
+Fraction of data checked: 100%, Fraction of mislabeled identified (self-influence): 100.00%
+Fraction of data checked: 10%, Fraction of mislabeled identified (baseline): 10.32%
+Fraction of data checked: 20%, Fraction of mislabeled identified (baseline): 20.62%
+Fraction of data checked: 30%, Fraction of mislabeled identified (baseline): 31.08%
+Fraction of data checked: 40%, Fraction of mislabeled identified (baseline): 41.04%
+Fraction of data checked: 50%, Fraction of mislabeled identified (baseline): 50.94%
+Fraction of data checked: 60%, Fraction of mislabeled identified (baseline): 60.98%
+Fraction of data checked: 70%, Fraction of mislabeled identified (baseline): 70.47%
+Fraction of data checked: 80%, Fraction of mislabeled identified (baseline): 80.24%
+Fraction of data checked: 90%, Fraction of mislabeled identified (baseline): 90.20%
+Fraction of data checked: 100%, Fraction of mislabeled identified (baseline): 100.00%
+Plot saved as 'output/isic2024_resnet18_[50, 50]_0.01_64_50_0.3_42/../self_influence_mislabeled_identification_isic2024_resnet18_noise_0.3.png'
+Self-influence curve plot saved as 'output/isic2024_resnet18_[50, 50]_0.01_64_50_0.3_42/../self_influence_curve_isic2024_resnet18_noise_0.3.png'
+Label noise: 0.4
+Total number of samples: 58750
+Total number of noisy samples: 23500
+Fraction of data checked: 10%, Fraction of mislabeled identified (self-influence): 23.09%
+Fraction of data checked: 20%, Fraction of mislabeled identified (self-influence): 44.77%
+Fraction of data checked: 30%, Fraction of mislabeled identified (self-influence): 64.44%
+Fraction of data checked: 40%, Fraction of mislabeled identified (self-influence): 79.84%
+Fraction of data checked: 50%, Fraction of mislabeled identified (self-influence): 88.84%
+Fraction of data checked: 60%, Fraction of mislabeled identified (self-influence): 93.59%
+Fraction of data checked: 70%, Fraction of mislabeled identified (self-influence): 96.46%
+Fraction of data checked: 80%, Fraction of mislabeled identified (self-influence): 98.23%
+Fraction of data checked: 90%, Fraction of mislabeled identified (self-influence): 99.42%
+Fraction of data checked: 100%, Fraction of mislabeled identified (self-influence): 100.00%
+Fraction of data checked: 10%, Fraction of mislabeled identified (baseline): 10.08%
+Fraction of data checked: 20%, Fraction of mislabeled identified (baseline): 20.17%
+Fraction of data checked: 30%, Fraction of mislabeled identified (baseline): 30.31%
+Fraction of data checked: 40%, Fraction of mislabeled identified (baseline): 40.29%
+Fraction of data checked: 50%, Fraction of mislabeled identified (baseline): 50.26%
+Fraction of data checked: 60%, Fraction of mislabeled identified (baseline): 60.38%
+Fraction of data checked: 70%, Fraction of mislabeled identified (baseline): 70.23%
+Fraction of data checked: 80%, Fraction of mislabeled identified (baseline): 80.26%
+Fraction of data checked: 90%, Fraction of mislabeled identified (baseline): 90.15%
+Fraction of data checked: 100%, Fraction of mislabeled identified (baseline): 100.00%
+Plot saved as 'output/isic2024_resnet18_[50, 50]_0.01_64_50_0.4_42/../self_influence_mislabeled_identification_isic2024_resnet18_noise_0.4.png'
+Self-influence curve plot saved as 'output/isic2024_resnet18_[50, 50]_0.01_64_50_0.4_42/../self_influence_curve_isic2024_resnet18_noise_0.4.png'
+Combined self-influence curve plot saved as 'output/isic2024_resnet18_[50, 50]_0.01_64_50_0.4_42/../self_influence_curve_combined_isic2024_resnet18.png'
+Label noise: 0.1
+Total number of samples: 58750
+Total number of noisy samples: 5875
+Fraction of data checked: 10%, Fraction of mislabeled identified (self-influence): 71.90%
+Fraction of data checked: 20%, Fraction of mislabeled identified (self-influence): 91.11%
+Fraction of data checked: 30%, Fraction of mislabeled identified (self-influence): 96.32%
+Fraction of data checked: 40%, Fraction of mislabeled identified (self-influence): 98.28%
+Fraction of data checked: 50%, Fraction of mislabeled identified (self-influence): 99.17%
+Fraction of data checked: 60%, Fraction of mislabeled identified (self-influence): 99.57%
+Fraction of data checked: 70%, Fraction of mislabeled identified (self-influence): 99.80%
+Fraction of data checked: 80%, Fraction of mislabeled identified (self-influence): 99.91%
+Fraction of data checked: 90%, Fraction of mislabeled identified (self-influence): 99.98%
+Fraction of data checked: 100%, Fraction of mislabeled identified (self-influence): 100.00%
+Fraction of data checked: 10%, Fraction of mislabeled identified (baseline): 10.60%
+Fraction of data checked: 20%, Fraction of mislabeled identified (baseline): 21.04%
+Fraction of data checked: 30%, Fraction of mislabeled identified (baseline): 31.13%
+Fraction of data checked: 40%, Fraction of mislabeled identified (baseline): 41.51%
+Fraction of data checked: 50%, Fraction of mislabeled identified (baseline): 51.51%
+Fraction of data checked: 60%, Fraction of mislabeled identified (baseline): 61.79%
+Fraction of data checked: 70%, Fraction of mislabeled identified (baseline): 71.01%
+Fraction of data checked: 80%, Fraction of mislabeled identified (baseline): 81.29%
+Fraction of data checked: 90%, Fraction of mislabeled identified (baseline): 90.57%
+Fraction of data checked: 100%, Fraction of mislabeled identified (baseline): 100.00%
+Plot saved as 'output/isic2024_resnet50_[50, 50]_0.01_64_50_0.1_42/../self_influence_mislabeled_identification_isic2024_resnet50_noise_0.1.png'
+Self-influence curve plot saved as 'output/isic2024_resnet50_[50, 50]_0.01_64_50_0.1_42/../self_influence_curve_isic2024_resnet50_noise_0.1.png'
+Label noise: 0.2
+Total number of samples: 58750
+Total number of noisy samples: 11750
+Fraction of data checked: 10%, Fraction of mislabeled identified (self-influence): 46.65%
+Fraction of data checked: 20%, Fraction of mislabeled identified (self-influence): 80.08%
+Fraction of data checked: 30%, Fraction of mislabeled identified (self-influence): 92.34%
+Fraction of data checked: 40%, Fraction of mislabeled identified (self-influence): 96.77%
+Fraction of data checked: 50%, Fraction of mislabeled identified (self-influence): 98.68%
+Fraction of data checked: 60%, Fraction of mislabeled identified (self-influence): 99.33%
+Fraction of data checked: 70%, Fraction of mislabeled identified (self-influence): 99.64%
+Fraction of data checked: 80%, Fraction of mislabeled identified (self-influence): 99.86%
+Fraction of data checked: 90%, Fraction of mislabeled identified (self-influence): 99.93%
+Fraction of data checked: 100%, Fraction of mislabeled identified (self-influence): 100.00%
+Fraction of data checked: 10%, Fraction of mislabeled identified (baseline): 10.49%
+Fraction of data checked: 20%, Fraction of mislabeled identified (baseline): 21.21%
+Fraction of data checked: 30%, Fraction of mislabeled identified (baseline): 31.62%
+Fraction of data checked: 40%, Fraction of mislabeled identified (baseline): 41.73%
+Fraction of data checked: 50%, Fraction of mislabeled identified (baseline): 51.70%
+Fraction of data checked: 60%, Fraction of mislabeled identified (baseline): 61.76%
+Fraction of data checked: 70%, Fraction of mislabeled identified (baseline): 71.61%
+Fraction of data checked: 80%, Fraction of mislabeled identified (baseline): 81.72%
+Fraction of data checked: 90%, Fraction of mislabeled identified (baseline): 90.99%
+Fraction of data checked: 100%, Fraction of mislabeled identified (baseline): 100.00%
+Plot saved as 'output/isic2024_resnet50_[50, 50]_0.01_64_50_0.2_42/../self_influence_mislabeled_identification_isic2024_resnet50_noise_0.2.png'
+Self-influence curve plot saved as 'output/isic2024_resnet50_[50, 50]_0.01_64_50_0.2_42/../self_influence_curve_isic2024_resnet50_noise_0.2.png'
+Label noise: 0.3
+Total number of samples: 58750
+Total number of noisy samples: 17625
+Fraction of data checked: 10%, Fraction of mislabeled identified (self-influence): 32.19%
+Fraction of data checked: 20%, Fraction of mislabeled identified (self-influence): 61.78%
+Fraction of data checked: 30%, Fraction of mislabeled identified (self-influence): 83.54%
+Fraction of data checked: 40%, Fraction of mislabeled identified (self-influence): 93.26%
+Fraction of data checked: 50%, Fraction of mislabeled identified (self-influence): 97.06%
+Fraction of data checked: 60%, Fraction of mislabeled identified (self-influence): 98.71%
+Fraction of data checked: 70%, Fraction of mislabeled identified (self-influence): 99.36%
+Fraction of data checked: 80%, Fraction of mislabeled identified (self-influence): 99.68%
+Fraction of data checked: 90%, Fraction of mislabeled identified (self-influence): 99.91%
+Fraction of data checked: 100%, Fraction of mislabeled identified (self-influence): 100.00%
+Fraction of data checked: 10%, Fraction of mislabeled identified (baseline): 9.74%
+Fraction of data checked: 20%, Fraction of mislabeled identified (baseline): 19.72%
+Fraction of data checked: 30%, Fraction of mislabeled identified (baseline): 29.86%
+Fraction of data checked: 40%, Fraction of mislabeled identified (baseline): 40.27%
+Fraction of data checked: 50%, Fraction of mislabeled identified (baseline): 50.03%
+Fraction of data checked: 60%, Fraction of mislabeled identified (baseline): 60.24%
+Fraction of data checked: 70%, Fraction of mislabeled identified (baseline): 69.97%
+Fraction of data checked: 80%, Fraction of mislabeled identified (baseline): 80.25%
+Fraction of data checked: 90%, Fraction of mislabeled identified (baseline): 90.20%
+Fraction of data checked: 100%, Fraction of mislabeled identified (baseline): 100.00%
+Plot saved as 'output/isic2024_resnet50_[50, 50]_0.01_64_50_0.3_42/../self_influence_mislabeled_identification_isic2024_resnet50_noise_0.3.png'
+Self-influence curve plot saved as 'output/isic2024_resnet50_[50, 50]_0.01_64_50_0.3_42/../self_influence_curve_isic2024_resnet50_noise_0.3.png'
+Label noise: 0.4
+Total number of samples: 58750
+Total number of noisy samples: 23500
+Fraction of data checked: 10%, Fraction of mislabeled identified (self-influence): 23.94%
+Fraction of data checked: 20%, Fraction of mislabeled identified (self-influence): 47.00%
+Fraction of data checked: 30%, Fraction of mislabeled identified (self-influence): 68.54%
+Fraction of data checked: 40%, Fraction of mislabeled identified (self-influence): 85.24%
+Fraction of data checked: 50%, Fraction of mislabeled identified (self-influence): 93.39%
+Fraction of data checked: 60%, Fraction of mislabeled identified (self-influence): 96.58%
+Fraction of data checked: 70%, Fraction of mislabeled identified (self-influence): 98.26%
+Fraction of data checked: 80%, Fraction of mislabeled identified (self-influence): 99.16%
+Fraction of data checked: 90%, Fraction of mislabeled identified (self-influence): 99.73%
+Fraction of data checked: 100%, Fraction of mislabeled identified (self-influence): 100.00%
+Fraction of data checked: 10%, Fraction of mislabeled identified (baseline): 10.06%
+Fraction of data checked: 20%, Fraction of mislabeled identified (baseline): 20.11%
+Fraction of data checked: 30%, Fraction of mislabeled identified (baseline): 30.18%
+Fraction of data checked: 40%, Fraction of mislabeled identified (baseline): 40.27%
+Fraction of data checked: 50%, Fraction of mislabeled identified (baseline): 50.40%
+Fraction of data checked: 60%, Fraction of mislabeled identified (baseline): 60.41%
+Fraction of data checked: 70%, Fraction of mislabeled identified (baseline): 70.18%
+Fraction of data checked: 80%, Fraction of mislabeled identified (baseline): 80.27%
+Fraction of data checked: 90%, Fraction of mislabeled identified (baseline): 90.35%
+Fraction of data checked: 100%, Fraction of mislabeled identified (baseline): 100.00%
+Plot saved as 'output/isic2024_resnet50_[50, 50]_0.01_64_50_0.4_42/../self_influence_mislabeled_identification_isic2024_resnet50_noise_0.4.png'
+Self-influence curve plot saved as 'output/isic2024_resnet50_[50, 50]_0.01_64_50_0.4_42/../self_influence_curve_isic2024_resnet50_noise_0.4.png'
+Combined self-influence curve plot saved as 'output/isic2024_resnet50_[50, 50]_0.01_64_50_0.4_42/../self_influence_curve_combined_isic2024_resnet50.png'
+
+JOB STATISTICS
+==============
+Job ID: 9066357
+Cluster: snellius
+User/Group: scur2832/scur2832
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:00:21
+CPU Efficiency: 3.76% of 00:09:18 core-walltime
+Job Wall-clock time: 00:00:31
+Memory Utilized: 2.12 MB
+Memory Efficiency: 0.00% of 120.00 GB

@@ -14,3 +14,5 @@ module load 2023
 source venv/bin/activate
 
 python src/evaluate_noise_prediction.py --model resnet50 --dataset isic2024 --num_epochs 50 --epochs 21 14 14 16 --label_noises 0.1 0.2 0.3 0.4
+
+python src/plot_mislabeled_identified.py --model resnet50 --dataset isic2024 --num_epochs 50 --epochs 21 14 14 16 --label_noises 0.1 0.2 0.3 0.4

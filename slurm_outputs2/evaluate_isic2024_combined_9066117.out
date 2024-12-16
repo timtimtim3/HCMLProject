@@ -1,0 +1,38 @@
+Using device: cuda
+Args: {'dataset': 'isic2024', 'model': 'resnet18', 'hidden_sizes': [50, 50], 'lr': 0.01, 'batch_size': 64, 'num_epochs': 50, 'label_noise': 0.0, 'seed': 42, 'label_noises': [0.1, 0.2, 0.3, 0.4], 'epochs_resnet18': [27, 34, 15, 13], 'epochs_resnet50': [21, 14, 14, 16]}
+Traceback (most recent call last):
+  File "/gpfs/home4/scur2832/HCMLProject/src/evaluate_combined_noise_prediction.py", line 167, in <module>
+    main()
+  File "/gpfs/home4/scur2832/HCMLProject/src/evaluate_combined_noise_prediction.py", line 164, in main
+    plot_combined_results(args, f1_scores, plot_path)
+  File "/gpfs/home4/scur2832/HCMLProject/src/evaluate_combined_noise_prediction.py", line 99, in plot_combined_results
+    bars_resnet50_ours = plt.bar(
+  File "/gpfs/home4/scur2832/HCMLProject/venv/lib64/python3.9/site-packages/matplotlib/pyplot.py", line 2956, in bar
+    return gca().bar(
+  File "/gpfs/home4/scur2832/HCMLProject/venv/lib64/python3.9/site-packages/matplotlib/__init__.py", line 1476, in inner
+    return func(
+  File "/gpfs/home4/scur2832/HCMLProject/venv/lib64/python3.9/site-packages/matplotlib/axes/_axes.py", line 2544, in bar
+    color = itertools.chain(itertools.cycle(mcolors.to_rgba_array(color)),
+  File "/gpfs/home4/scur2832/HCMLProject/venv/lib64/python3.9/site-packages/matplotlib/colors.py", line 510, in to_rgba_array
+    rgba = np.array([to_rgba(cc) for cc in c])
+  File "/gpfs/home4/scur2832/HCMLProject/venv/lib64/python3.9/site-packages/matplotlib/colors.py", line 510, in <listcomp>
+    rgba = np.array([to_rgba(cc) for cc in c])
+  File "/gpfs/home4/scur2832/HCMLProject/venv/lib64/python3.9/site-packages/matplotlib/colors.py", line 314, in to_rgba
+    rgba = _to_rgba_no_colorcycle(c, alpha)
+  File "/gpfs/home4/scur2832/HCMLProject/venv/lib64/python3.9/site-packages/matplotlib/colors.py", line 398, in _to_rgba_no_colorcycle
+    raise ValueError(f"Invalid RGBA argument: {orig_c!r}")
+ValueError: Invalid RGBA argument: 10.768627450980393
+
+JOB STATISTICS
+==============
+Job ID: 9066117
+Cluster: snellius
+User/Group: scur2832/scur2832
+State: FAILED (exit code 1)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:00:11
+CPU Efficiency: 3.06% of 00:06:00 core-walltime
+Job Wall-clock time: 00:00:20
+Memory Utilized: 2.54 MB
+Memory Efficiency: 0.00% of 120.00 GB

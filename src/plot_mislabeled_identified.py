@@ -10,6 +10,14 @@ import matplotlib.pyplot as plt
 from utils.parser import add_shared_parser_arguments
 from utils.functions import get_output_dir_from_args
 
+# Normalized colors for professional styling
+red_resnet18 = (0.7686, 0.1176, 0.2275, 0.3)
+blue_resnet18 = (0.3922, 0.5843, 0.9294, 0.3)
+red_resnet50 = (0.7686, 0.1176, 0.2275, 0.9)
+blue_resnet50 = (0.3922, 0.5843, 0.9294, 0.9)
+purple = (0.5804, 0.0, 0.8275, 0.9)
+pink = (1.0, 0.7529, 0.7961, 0.9)
+
 
 def load_labels(data_dir, label_noise=None):
     if label_noise is None:
@@ -44,14 +52,16 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    if args.model == 'resnet18':
+        model_name = "ResNet18"
+    elif args.model == 'resnet50':
+        model_name = "ResNet50"
+
     data_dir = os.path.join("data", args.dataset.upper())
     y_true = load_labels(data_dir, label_noise=None)
 
     # We'll store data for combined plotting
     combined_label_noises_data = []
-    colors = ['blue', 'red', 'gray', 'green', 'orange', 'purple']
-    # Just ensure we have enough colors for the number of label_noises
-    # If not, they will just repeat after these colors.
 
     for i, label_noise in enumerate(args.label_noises):
         output_dir = get_output_dir_from_args(args, label_noise=label_noise)
@@ -107,29 +117,27 @@ if __name__ == "__main__":
             baseline_fractions_identified.append(fraction_id)
 
         # Save the mislabeled identification plot
-        save_path = os.path.join(output_dir, f"../self_influence_mislabeled_identification_noise_{args.dataset}_{args.model}_{label_noise}.png")
+        save_path = os.path.join(output_dir, f"../self_influence_mislabeled_identification_{args.dataset}_{args.model}_noise_{label_noise}.png")
 
         plt.figure(figsize=(8, 6))
-        # Plot self-influence line in blue
-        plt.plot(fractions_checked, fractions_identified, label='Self-Influence')
-        # Plot baseline line in red
-        plt.plot(fractions_checked, baseline_fractions_identified, color='red', label='Baseline Max Prob')
+        # Plot self-influence line
+        plt.plot(fractions_checked, fractions_identified, color=red_resnet50, linewidth=2, label=f"Self-Influence ({model_name})")
+        # Plot baseline line
+        plt.plot(fractions_checked, baseline_fractions_identified, color=blue_resnet50, linewidth=2, label=f"Baseline ({model_name})")
 
-        plt.xlabel('Fraction of Data Checked')
-        plt.ylabel('Fraction of Mislabeled Identified')
-        plt.title('Identification of Mislabeled Samples')
-        plt.xticks(intervals)
-        plt.yticks(np.linspace(0, 1, 11))
-        plt.grid(True)
-        plt.legend()
-        plt.savefig(save_path)
+        plt.xlabel('Fraction of Data Checked', fontsize=14)
+        plt.ylabel('Fraction of Mislabeled Identified', fontsize=14)
+        plt.title(f'Mislabeled Identification Performance on {args.dataset.upper()} using {model_name}', fontsize=16)
+        plt.xticks(intervals, fontsize=12)
+        plt.yticks(np.linspace(0, 1, 11), fontsize=12)
+        plt.grid(linestyle='--', alpha=0.7)
+        plt.legend(fontsize=12, loc='lower right')
+        plt.tight_layout()
+        plt.savefig(save_path, bbox_inches='tight')
         print(f"Plot saved as '{save_path}'")
 
         # Now create the self-influence score curve
-        # Sort self-influence in descending order
         sorted_self_influence = self_influence[ranked_indices]
-
-        total_samples = len(y_true)  # Make sure this is defined at the top level
 
         # Sample ~1000 points
         num_points = 1000
@@ -145,16 +153,17 @@ if __name__ == "__main__":
         x_pct = (x_vals / total_samples) * 100
 
         # Save an individual plot for each label_noise
-        curve_save_path = os.path.join(output_dir, f"../self_influence_curve_noise_{args.dataset}_{args.model}_{label_noise}.png")
+        curve_save_path = os.path.join(output_dir, f"../self_influence_curve_{args.dataset}_{args.model}_noise_{label_noise}.png")
 
         plt.figure(figsize=(8, 6))
-        plt.plot(x_pct, sampled_scores, color=colors[i % len(colors)], label=f'Noise: {label_noise}')
-        plt.xlabel('Percentage of Data')
-        plt.ylabel('Self-Influence Score')
-        plt.title('Self-Influence Score Curve')
-        plt.grid(True)
-        plt.legend()
-        plt.savefig(curve_save_path)
+        plt.plot(x_pct, sampled_scores, color=red_resnet50, linewidth=2, label=f'Noise: {label_noise}')
+        plt.xlabel('Percentage of Data', fontsize=14)
+        plt.ylabel('Self-Influence Score', fontsize=14)
+        plt.title(f'Self-Influence Score Curve on {args.dataset.upper()} using {model_name}', fontsize=16)
+        plt.grid(linestyle='--', alpha=0.7)
+        plt.legend(fontsize=12)
+        plt.tight_layout()
+        plt.savefig(curve_save_path, bbox_inches='tight')
         print(f"Self-influence curve plot saved as '{curve_save_path}'")
 
         # Store for combined plot
@@ -162,15 +171,19 @@ if __name__ == "__main__":
 
     # For the combined plot:
     if len(args.label_noises) > 1:
-        combined_save_path = os.path.join(output_dir, f"../self_influence_curve_noise_{args.dataset}_{args.model}_{args.label_noises}.png")
+        combined_save_path = os.path.join(output_dir, f"../self_influence_curve_combined_{args.dataset}_{args.model}.png")
+
+        colors = [blue_resnet50, red_resnet50, purple, pink]
 
         plt.figure(figsize=(8, 6))
         for j, (ln, x_pct_j, sampled_scores_j) in enumerate(combined_label_noises_data):
-            plt.plot(x_pct_j, sampled_scores_j, color=colors[j % len(colors)], label=f'Noise: {ln}')
-        plt.xlabel('Percentage of Data')
-        plt.ylabel('Self-Influence Score')
-        plt.title('Self-Influence Score Curves (Combined)')
-        plt.grid(True)
-        plt.legend()
-        plt.savefig(combined_save_path)
+            color = colors[j]
+            plt.plot(x_pct_j, sampled_scores_j, color=color, linewidth=2, label=f'Noise: {ln}')
+        plt.xlabel('Percentage of Data', fontsize=14)
+        plt.ylabel('Self-Influence Score', fontsize=14)
+        plt.title(f'Self-Influence Score Curves on {args.dataset.upper()} using {model_name}', fontsize=16)
+        plt.grid(linestyle='--', alpha=0.7)
+        plt.legend(fontsize=12)
+        plt.tight_layout()
+        plt.savefig(combined_save_path, bbox_inches='tight')
         print(f"Combined self-influence curve plot saved as '{combined_save_path}'")
