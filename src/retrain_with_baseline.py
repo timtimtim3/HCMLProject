@@ -26,7 +26,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Retrain the model based on 'cleaned' dataset")
     add_shared_parser_arguments(parser)
 
-    parser.add_argument("--epochs", nargs='+', required=True, type=int, help="Specify which epochs to use for the aggregated score")
+    # parser.add_argument("--epochs", nargs='+', required=True, type=int, help="Specify which epochs to use for the aggregated score")
     parser.add_argument("--threshold", type=float, required=True, help="Threshold, [0,1] e.g. 0.1, used to removed uncertained datasamples")
 
     args = parser.parse_args()
@@ -64,16 +64,21 @@ if __name__ == "__main__":
             transform.insert(0, transforms.Lambda(lambda x: x.repeat(3,1,1)))
 
 
-    aggregated_score = aggregate_self_influence_epochs(output_dir, args.epochs)
-    
+    # aggregated_score = aggregate_self_influence_epochs(output_dir, args.epochs)
     # Rank samples by self-influence in descending order
-    ranked_indices = np.argsort(-aggregated_score)
+    # ranked_indices = np.argsort(-aggregated_score)
+
+    with open(os.path.join(output_dir, "baseline_sorted_by_max_prob.json"), 'r') as f:
+        # influence_scores_baseline = [max(entry['probabilities']) for entry in json.load(f)]
+        sorted_baseline = json.load(f)
+
+    ranked_indices = [d["index"] for d in sorted_baseline]
     threshold_index = int(len(ranked_indices) * args.threshold)
 
     relabel_indices = ranked_indices[:threshold_index]
 
     train_dataset = DatasetClass(split="train", transform=transform, label_noise=args.label_noise,
-                                seed=args.seed, relabel_indices=relabel_indices.tolist())
+                                seed=args.seed, relabel_indices=relabel_indices)
     val_dataset = DatasetClass(split="val", transform=transform, seed=args.seed)
 
     # Initialize model with sample_info (input_size, output_size, etc)
@@ -162,7 +167,7 @@ if __name__ == "__main__":
               f"Val Recall: {recall:.4f}, "
               f"Val F1: {f1:.4f}")
 
-        checkpoint_path = os.path.join(checkpoint_dir, f'retrained_model_{args.threshold}_epoch_{epoch + 1}.pth')
+        checkpoint_path = os.path.join(checkpoint_dir, f'retrained_model_baseline_epoch_{epoch + 1}.pth')
 
         checkpoint = ModelCheckpoint(
             epoch=epoch+1,
@@ -197,7 +202,7 @@ if __name__ == "__main__":
 
     # After all epochs are done, save the best model
     if best_model_checkpoint is not None:
-        best_model_path = os.path.join(checkpoint_dir, f'best_retrained_model_{args.threshold}_epoch_{best_model_checkpoint.epoch}.pth')
+        best_model_path = os.path.join(checkpoint_dir, f'best_retrained_model_baseline_epoch_{best_model_checkpoint.epoch}.pth')
         torch.save(asdict(best_model_checkpoint), best_model_path)
 
         logger.info(
@@ -206,7 +211,7 @@ if __name__ == "__main__":
         )
 
 
-    output_path = os.path.join(output_dir, f"retraining_{args.threshold}_stats.json")
+    output_path = os.path.join(output_dir, "retraining_baseline_stats.json")
 
     with open(output_path, "w") as f:
         json.dump(training_data, f, indent=2)
