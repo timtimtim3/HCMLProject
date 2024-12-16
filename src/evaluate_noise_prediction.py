@@ -32,6 +32,7 @@ def load_data(output_dir, dataset, label_noise, score_epoch_num):
 
     return np.array(y_true), np.array(y_noisy), np.array(influence_scores_ours), np.array(influence_scores_baseline)
 
+
 def evaluate_noise_detection(noisy_indices, predicted_noisy_indices):
     """
     Evaluate the performance of noise detection.
@@ -53,6 +54,7 @@ def evaluate_noise_detection(noisy_indices, predicted_noisy_indices):
 
     return precision, recall, f1
 
+
 def detect_noisy_samples(influence_scores, top_percent, baseline=False):
     """
     Identify the top percent of samples as noisy based on influence scores.
@@ -69,6 +71,7 @@ def detect_noisy_samples(influence_scores, top_percent, baseline=False):
     num_noisy = int(top_percent * num_samples)
     ranked_indices = np.argsort(influence_scores if baseline else -influence_scores)  # Ascending for baseline, descending otherwise
     return set(ranked_indices[:num_noisy])
+
 
 def plot_results(args, f1_scores_ours, f1_scores_baseline, output_path):
     """
@@ -103,6 +106,7 @@ def plot_results(args, f1_scores_ours, f1_scores_baseline, output_path):
 
     plt.savefig(output_path)
     print(f"Plot saved at {output_path}")
+
 
 def main():
     parser = argparse.ArgumentParser(description="Evaluate noise detection performance.")
@@ -154,6 +158,7 @@ def main():
 
     # Plot results
     plot_results(args, f1_scores_ours, f1_scores_baseline, plot_path)
+
 
 if __name__ == "__main__":
     main()

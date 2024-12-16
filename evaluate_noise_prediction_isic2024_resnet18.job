@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu
+#SBATCH --gpus=1
+#SBATCH --job-name=eval_res18
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --time=00:05:00
+#SBATCH --output=slurm_outputs/evaluate_noise_prediction_isic2024_resnet18_%A.out
+
+module purge
+module load 2023
+
+source venv/bin/activate
+
+python src/evaluate_noise_prediction.py --model resnet18 --dataset isic2024 --num_epochs 50 --epochs 27 34 15 13 --label_noises 0.1 0.2 0.3 0.4

@@ -31,6 +31,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    # Small fix otherwise it will look for 0.0 
+    args.label_noise = args.threshold
+
     set_seed(args.seed)
     logger = setup_logger() 
     device = get_device() 
@@ -62,6 +65,7 @@ if __name__ == "__main__":
 
 
     aggregated_score = aggregate_self_influence_epochs(output_dir, args.epochs)
+    
     # Rank samples by self-influence in descending order
     ranked_indices = np.argsort(-aggregated_score)
     threshold_index = int(len(ranked_indices) * args.threshold)
