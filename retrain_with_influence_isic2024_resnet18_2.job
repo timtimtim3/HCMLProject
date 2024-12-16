@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu_h100
+#SBATCH --gpus=1
+#SBATCH --job-name=retrain_influence_res18
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --time=05:00:00
+#SBATCH --output=slurm_outputs/retrain_with_influence_isic2024_resnet18_2_%A.out
+
+module purge
+module load 2023
+
+source venv/bin/activate
+
+python src/retrain_with_influence.py --model resnet18 --dataset isic2024 --num_epochs 50 --epochs 34 --threshold 0.2

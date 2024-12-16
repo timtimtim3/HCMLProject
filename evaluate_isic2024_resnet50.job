@@ -6,7 +6,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16
 #SBATCH --time=00:05:00
-#SBATCH --output=slurm_outputs/evaluate_noise_prediction_isic2024_resnet50_%A.out
+#SBATCH --output=slurm_outputs/evaluate_isic2024_resnet50_%A.out
 
 module purge
 module load 2023

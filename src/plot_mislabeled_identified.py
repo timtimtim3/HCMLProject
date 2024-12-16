@@ -60,7 +60,7 @@ if __name__ == "__main__":
         y_noisy = load_labels(data_dir, label_noise=label_noise)
 
         # Aggregate self-influence values
-        self_influence = aggregate_self_influence_epochs(output_dir, args.epochs)
+        self_influence = aggregate_self_influence_epochs(output_dir, [args.epochs[i]])
 
         # Identify which samples are noisy (mislabeled)
         noisy_mask = y_true != y_noisy
@@ -107,9 +107,7 @@ if __name__ == "__main__":
             baseline_fractions_identified.append(fraction_id)
 
         # Save the mislabeled identification plot
-        epochs_str = "_".join(map(str, args.epochs))
-        filename = f'self_influence_mislabeled_identification_noise{label_noise}_epochs{epochs_str}.png'
-        save_path = os.path.join(output_dir, filename)
+        save_path = os.path.join(output_dir, f"../self_influence_mislabeled_identification_noise_{args.dataset}_{args.model}_{label_noise}.png")
 
         plt.figure(figsize=(8, 6))
         # Plot self-influence line in blue
@@ -147,8 +145,7 @@ if __name__ == "__main__":
         x_pct = (x_vals / total_samples) * 100
 
         # Save an individual plot for each label_noise
-        curve_filename = f'self_influence_curve_noise{label_noise}_epochs{epochs_str}.png'
-        curve_save_path = os.path.join(output_dir, curve_filename)
+        curve_save_path = os.path.join(output_dir, f"../self_influence_curve_noise_{args.dataset}_{args.model}_{label_noise}.png")
 
         plt.figure(figsize=(8, 6))
         plt.plot(x_pct, sampled_scores, color=colors[i % len(colors)], label=f'Noise: {label_noise}')
@@ -165,9 +162,7 @@ if __name__ == "__main__":
 
     # For the combined plot:
     if len(args.label_noises) > 1:
-        combined_filename = f'self_influence_curve_noise{"_".join(map(str, args.label_noises))}_epochs{epochs_str}.png'
-        first_output_dir = get_output_dir_from_args(args, label_noise=args.label_noises[0])
-        combined_save_path = os.path.join(first_output_dir, combined_filename)
+        combined_save_path = os.path.join(output_dir, f"../self_influence_curve_noise_{args.dataset}_{args.model}_{args.label_noises}.png")
 
         plt.figure(figsize=(8, 6))
         for j, (ln, x_pct_j, sampled_scores_j) in enumerate(combined_label_noises_data):
