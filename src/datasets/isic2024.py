@@ -20,7 +20,7 @@ class ISIC2024(Dataset):
     NUM_CLASSES = 2
 
     def __init__(self, split, transform=None, force_download=False, train_ratio=0.8, val_ratio=0.1, label_noise=0.0,
-                 seed=42, skip_indices=[]):
+                 seed=42, relabel_indices=[]):
         """
         Args:
             split (str): "train", "val", or "test"
@@ -56,10 +56,12 @@ class ISIC2024(Dataset):
         if split == 'train' and label_noise > 0:
             self._add_noise_and_save_labels()
 
-        if len(skip_indices) != 0:
-            skip_image_ids = [value for i, value in enumerate(self.image_ids) if i in skip_indices]
-            self.image_ids = [img_id for img_id in self.image_ids if img_id not in skip_image_ids]
-            self.id_to_label = {key: value for key, value in self.id_to_label.items() if key not in skip_image_ids}
+        if len(relabel_indices) != 0:
+            correct_labels = np.load(os.path.join(self.root, "labels_train.npy"))
+            relabel_ids = [value for i, value in enumerate(self.image_ids) if i in relabel_indices]
+
+            for index, id in enumerate(relabel_ids):
+                self.id_to_label[id] = correct_labels[relabel_indices[index]]
 
 
         # Compose the transforms

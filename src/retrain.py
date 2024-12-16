@@ -66,10 +66,10 @@ if __name__ == "__main__":
     ranked_indices = np.argsort(-aggregated_score)
     threshold_index = int(len(ranked_indices) * args.threshold)
 
-    skip_indices = ranked_indices[:threshold_index]
+    relabel_indices = ranked_indices[:threshold_index]
 
     train_dataset = DatasetClass(split="train", transform=transform, label_noise=args.label_noise,
-                                seed=args.seed, skip_indices=skip_indices.tolist())
+                                seed=args.seed, relabel_indices=relabel_indices.tolist())
     val_dataset = DatasetClass(split="val", transform=transform, seed=args.seed)
 
     # Initialize model with sample_info (input_size, output_size, etc)

@@ -15,7 +15,7 @@ class MNIST(TorchvisionMNIST):
 
     NUM_CLASSES = 10
 
-    def __init__(self, split="train", transform=[], label_noise=0.0, seed=42, skip_indices=[]):
+    def __init__(self, split="train", transform=[], label_noise=0.0, seed=42, relabel_indices=[]):
         self.root = OUTPUT_DIR
 
         # Determine if we are in train mode or not
@@ -51,6 +51,8 @@ class MNIST(TorchvisionMNIST):
             np.save(os.path.join(self.root, "MNIST", f"labels_train_noisy{self.label_noise}.npy"), noisy_labels)
 
 
-        if len(skip_indices) != 0:
-            self.data = [d for i,d in enumerate(self.data) if i not in skip_indices]
-            self.targets = [t for i,t in enumerate(self.targets) if i not in skip_indices]
+        if len(relabel_indices) != 0:
+            correct_labels = np.load(os.path.join(self.root, "MNIST", "labels_train.npy"))
+
+            for index in relabel_indices:
+                self.targets[index] = correct_labels[index]
